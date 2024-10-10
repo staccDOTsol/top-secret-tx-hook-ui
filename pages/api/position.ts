@@ -1796,7 +1796,7 @@ const gameAcc = await program.account.game.fetch(game)
         .add(proxyOpenPositionInstruction);
 
       // Add any necessary ATA creation instructions
-      const ataInstructions = await createNecessaryATAs(walletPublicKey, poolInfo, FOMO3D_MINT);
+      const ataInstructions = await createNecessaryATAs(walletPublicKey, poolInfo, FOMO3D_MINT, gameAcc.otherMint, gameAcc.mint);
       if (ataInstructions.length > 0){
       transaction.add(...ataInstructions);
       }
@@ -3305,15 +3305,15 @@ async function createOpenPositionInstruction(walletPublicKey: PublicKey, nftMint
       personalPosition: getPdaPersonalPositionAddress(CLMM_PROGRAM_ID, nftMint).publicKey,
       tokenVault0: new PublicKey(poolInfo.vaultA),
       tokenVault1: new PublicKey(poolInfo.vaultB),
-      userAta: getAssociatedTokenAddressSync(new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"), walletPublicKey, true),
+      userAta: getAssociatedTokenAddressSync(new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"), walletPublicKey, true, TOKEN_2022_PROGRAM_ID),
       mint: new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"),
       mint2: FOMO3D_MINT,
-      userAta2: getAssociatedTokenAddressSync(FOMO3D_MINT, walletPublicKey, true),
+      userAta2: getAssociatedTokenAddressSync(FOMO3D_MINT, walletPublicKey, true, TOKEN_2022_PROGRAM_ID),
     })
     .instruction();
 }
 
-async function createNecessaryATAs(walletPublicKey: PublicKey, poolInfo: any, fomo3dMint: PublicKey) {
+async function createNecessaryATAs(walletPublicKey: PublicKey, poolInfo: any, fomo3dMint: PublicKey, minta: PublicKey, mintb: PublicKey) {
     console.log(poolInfo)
   const instructions = [];
 
@@ -3321,6 +3321,8 @@ async function createNecessaryATAs(walletPublicKey: PublicKey, poolInfo: any, fo
     getAssociatedTokenAddressSync(new PublicKey(poolInfo.mintA.address), walletPublicKey, true),
     getAssociatedTokenAddressSync(new PublicKey(poolInfo.mintB.address), walletPublicKey, true),
     getAssociatedTokenAddressSync(fomo3dMint, walletPublicKey, true),
+    getAssociatedTokenAddressSync(minta, walletPublicKey, true, TOKEN_2022_PROGRAM_ID),
+    getAssociatedTokenAddressSync(mintb, walletPublicKey, true, TOKEN_2022_PROGRAM_ID)
   ];
 
   for (const ata of atas) {
