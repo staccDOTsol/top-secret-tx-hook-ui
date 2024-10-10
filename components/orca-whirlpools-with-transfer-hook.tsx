@@ -69,7 +69,7 @@ export function OrcaWhirlpoolsWithTransferHook() {
 
        const signed=   await wallet.signAllTransactions([tx, transaction])
         const sig1 = await connection.sendRawTransaction(signed[0].serialize());
-        await connection.confirmTransaction(sig1, "finalized")
+        await connection.confirmTransaction(sig1, "recent")
         const sig2 = await connection.sendRawTransaction(signed[1].serialize());
         setArbResult(`Transaction signatures: ${sig1}, ${sig2}`);
 

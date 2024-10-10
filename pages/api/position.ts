@@ -404,7 +404,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         (getAssociatedTokenAddressSync(FOMO3D_MINT, walletPublicKey, true)),
         walletPublicKey,
         FOMO3D_MINT,
-        TOKEN_2022_PROGRAM_ID
       ))
     }
       tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
