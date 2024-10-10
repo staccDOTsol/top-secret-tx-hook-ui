@@ -13,7 +13,7 @@ const SOLANA_RPC_ENDPOINT = "https://rpc.ironforge.network/mainnet?apiKey=01HRZ9
 const connection = new Connection(SOLANA_RPC_ENDPOINT, "confirmed");
 
 const PROGRAM_ID = new PublicKey("AxaViNQ6EwvHuhAXXgsHkjAVXJdRTemYJeJEepaT8zDX");
-const FOMO3D_MINT = new PublicKey("5oCpEpFo17kqmcs3454dYFsLGhSNdoPsmSaDRxh5YCzd");
+const FOMO3D_MINT = new PublicKey("BQpGv6LVWG1JRm1NdjerNSFdChMdAULJr3x9t2Swpump");
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
@@ -56,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const tokenBalance = await fetchTokenBalance(walletPublicKey, FOMO3D_MINT);
 
       // Calculate position size (1/100 of balance)
-      const positionSize = tokenBalance.div(new BN(100));
+      const positionSize = tokenBalance.div(new BN(10));
 
       // Generate a new NFT mint for the position
 
@@ -298,7 +298,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           liquidity,
           amountMaxA: base === "MintA" ? baseAmount : otherAmountMax,
           amountMaxB: base === "MintA" ? otherAmountMax : baseAmount,
-          withMetadata: withMetadata === "create",
+          withMetadata: false,
           baseFlag: base === "MintA",
           optionBaseFlag: 1,
         },
@@ -387,23 +387,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const serializedTransaction = transaction.serialize({ requireAllSignatures: false }).toString('base64');
       const serializedSigners = [Buffer.from(nftMint.secretKey).toString('base64'), Buffer.from(nft.secretKey).toString('base64')];
       const tx = new Transaction().add(ix)
-      const aiMaybe = await connection.getAccountInfo(getAssociatedTokenAddressSync(new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"), walletPublicKey, true, TOKEN_2022_PROGRAM_ID))
+      const aiMaybe = await connection.getAccountInfo(getAssociatedTokenAddressSync(new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"), walletPublicKey, true))
       if (!aiMaybe){
       tx.add(createAssociatedTokenAccountInstruction(
         walletPublicKey,
-        getAssociatedTokenAddressSync(new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"), walletPublicKey, true, TOKEN_2022_PROGRAM_ID),
+        getAssociatedTokenAddressSync(new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"), walletPublicKey, true),
         walletPublicKey,
         new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"),
         TOKEN_2022_PROGRAM_ID
       ))
     }
-    const aiMaybe2 = await connection.getAccountInfo(getAssociatedTokenAddressSync(FOMO3D_MINT, walletPublicKey, true, TOKEN_2022_PROGRAM_ID))
+    const aiMaybe2 = await connection.getAccountInfo(getAssociatedTokenAddressSync(FOMO3D_MINT, walletPublicKey, true))
     if (!aiMaybe2){
       tx.add(createAssociatedTokenAccountInstruction(
         walletPublicKey,
-        getAssociatedTokenAddressSync(new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"), walletPublicKey, true, TOKEN_2022_PROGRAM_ID),
+        (getAssociatedTokenAddressSync(FOMO3D_MINT, walletPublicKey, true)),
         walletPublicKey,
-        new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"),
+        FOMO3D_MINT,
         TOKEN_2022_PROGRAM_ID
       ))
     }
@@ -441,7 +441,7 @@ async function fetchPoolInfo(): Promise<ApiV3PoolInfoBaseItem> {
     
 
 async function fetchTokenBalance(walletPublicKey: PublicKey, mint: PublicKey) {
-  const ata = getAssociatedTokenAddressSync(mint, walletPublicKey, true, TOKEN_2022_PROGRAM_ID);
+  const ata = getAssociatedTokenAddressSync(mint, walletPublicKey, true);
   const balance = await connection.getTokenAccountBalance(ata);
   return new BN(balance.value.amount);
 }
@@ -1885,10 +1885,10 @@ async function createOpenPositionInstruction(walletPublicKey: PublicKey, nftMint
       personalPosition: getPdaPersonalPositionAddress(CLMM_PROGRAM_ID, nftMint).publicKey,
       tokenVault0: new PublicKey(poolInfo.vaultA),
       tokenVault1: new PublicKey(poolInfo.vaultB),
-      userAta: getAssociatedTokenAddressSync(new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"), walletPublicKey, true, TOKEN_2022_PROGRAM_ID),
+      userAta: getAssociatedTokenAddressSync(new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"), walletPublicKey, true),
       mint: new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"),
       mint2: FOMO3D_MINT,
-      userAta2: getAssociatedTokenAddressSync(FOMO3D_MINT, walletPublicKey, true, TOKEN_2022_PROGRAM_ID),
+      userAta2: getAssociatedTokenAddressSync(FOMO3D_MINT, walletPublicKey, true),
     })
     .instruction();
 }
@@ -1900,7 +1900,7 @@ async function createNecessaryATAs(walletPublicKey: PublicKey, poolInfo: any, fo
   const atas = [
     getAssociatedTokenAddressSync(new PublicKey(poolInfo.mintA.address), walletPublicKey, true),
     getAssociatedTokenAddressSync(new PublicKey(poolInfo.mintB.address), walletPublicKey, true),
-    getAssociatedTokenAddressSync(fomo3dMint, walletPublicKey, true, TOKEN_2022_PROGRAM_ID),
+    getAssociatedTokenAddressSync(fomo3dMint, walletPublicKey, true),
   ];
 
   for (const ata of atas) {
