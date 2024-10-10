@@ -278,7 +278,15 @@ console.log(arbitrageOpportunities)
       cache.set(cacheKey, JSON.stringify(whirlpoolAccounts), expiryTime);
     }
     // Filter out the official Orca whirlpools
-    const filteredWhirlpoolAccounts = whirlpoolAccounts
+    
+    // Fetch the list of official Orca whirlpools
+    const response = await fetch('https://api.mainnet.orca.so/v1/whirlpool/list');
+    const orcaWhirlpools = await response.json();
+    const orcaWhirlpoolIds = new Set(orcaWhirlpools.whirlpools.map((p: any) => p.address));
+
+    // Filter out the official Orca whirlpools
+    const filteredWhirlpoolAccounts = whirlpoolAccounts.filter(
+      (account:any) => !orcaWhirlpoolIds.has(account.pubkey.toString()) )
     // Replace the original whirlpoolAccounts with the filtered list
     whirlpoolAccounts = filteredWhirlpoolAccounts;
 
