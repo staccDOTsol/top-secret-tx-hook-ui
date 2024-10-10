@@ -328,7 +328,7 @@ async function createAndSerializeTransaction(
   const messageV0 = new TransactionMessage({
     payerKey: walletPublicKey,
     recentBlockhash: latestBlockhash.blockhash,
-    instructions: [ComputeBudgetProgram.setComputeUnitLimit({units: 1_400_000}),ComputeBudgetProgram.requestHeapFrame({bytes: 256*1024}),
+    instructions: [
        ...instructions]
   }).compileToV0Message();
 
