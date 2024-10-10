@@ -93,8 +93,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
       // Prepare to add liquidity
       console.log("Preparing to add liquidity...");
-      const baseAmount = new Decimal(tokenBalanceA.value.uiAmount as number) .mul(0.1).toFixed(baseMint.decimals); // Use 1% of balance
-      const quoteAmount = new Decimal(tokenBalanceB.value.uiAmount as number).mul(0.1).toFixed(quoteMint.decimals); // Use 1% of balance
+      const baseAmount = new Decimal(tokenBalanceA.value.uiAmount as number) .mul(0.01).toFixed(baseMint.decimals); // Use 1% of balance
+      const quoteAmount = new Decimal(tokenBalanceB.value.uiAmount as number).mul(0.01).toFixed(quoteMint.decimals); // Use 1% of balance
     
       console.log(`Base amount to add: ${baseAmount}`);
       console.log(`Quote amount to add: ${quoteAmount}`);
