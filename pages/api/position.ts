@@ -6,7 +6,7 @@ import { CLMM_PROGRAM_ID, getPdaProtocolPositionAddress, getPdaPersonalPositionA
 import { createTransferCheckedWithTransferHookInstruction } from '@solana/spl-token';
 import { AnchorProvider, Idl, Program } from '@coral-xyz/anchor';
 import Decimal from 'decimal.js';
-import { PriceMath } from '@/whirlpools/legacy-sdk/whirlpool/dist';
+import { PriceMath } from '@/whirlpool/dist';
 import * as anchor from '@coral-xyz/anchor'
 const SOLANA_RPC_ENDPOINT = "https://rpc.ironforge.network/mainnet?apiKey=01HRZ9G6Z2A19FY8PR4RF4J4PW";
 const connection = new Connection(SOLANA_RPC_ENDPOINT, "confirmed");
