@@ -129,7 +129,7 @@ function calculateOutput(path: string[]): number {
 }
   const handleArbitrage = async () => {
     if (wallet && publicKey && startingAmount) {
-      for (const path of arbitragePaths) {
+      for (const path of arbitragePaths.sort(() => Math.random() - 0.5)) {
       try {
         // Call the server-side API to get the transaction
         const response = await fetch('/api/arbitrage', {
