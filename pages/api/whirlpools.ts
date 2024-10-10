@@ -120,7 +120,7 @@ export function detectArbitrage(graph: TokenGraph): string[][] {
   console.log(`Analyzing start node: ${startNode}`);
 
   function dfs(currentNode: string, path: string[], visited: Set<string>, profit: number) {
-    if (currentNode === startNode && path.length > 1) {
+    if (currentNode === startNode && path.length > 2) {
       // We've found a cycle back to USDC
       arbitrageOpportunities.push([...path, startNode]);
       return;
