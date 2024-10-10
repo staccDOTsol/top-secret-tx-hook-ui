@@ -209,7 +209,7 @@ console.log(arbitrageOpportunities)
         const cachedArbitragePaths = await cache.get('arbitrage_paths');
   
         if (cachedPools && cachedArbitragePaths) {
-          // If cached data exists, return it immediately
+          // If cached data exists, parse it before returning
           const responseData = {
             pools: JSON.parse(cachedPools),
             arbitragePaths: JSON.parse(cachedArbitragePaths),
@@ -227,6 +227,7 @@ console.log(arbitrageOpportunities)
         // If no cached data, process and return
         const responseData = await processAndCacheData();
         res.status(200).json(responseData);
+  
   
       } catch (error: any) {
         console.error("Failed to fetch whirlpools:", error);
@@ -597,12 +598,10 @@ console.log(arbitrageOpportunities)
     // Process token graph and arbitrage paths
     const tokenGraph = buildTokenGraphFromPools(poolsWithAdditionalData);
     const arbitragePaths = detectArbitrage(tokenGraph);
-
-    // Cache the results using NodeCache
-    cache.set('pools', poolsWithAdditionalData, 60); // Cache for 1 minute
-    cache.set('token_graph', tokenGraph, 60); // Cache for 1 minute
-    cache.set('arbitrage_paths', arbitragePaths, 60); // Cache for 1 minute
-
+    cache.set('pools', JSON.stringify(poolsWithAdditionalData), 60);
+    cache.set('token_graph', JSON.stringify(tokenGraph), 60);
+    cache.set('arbitrage_paths', JSON.stringify(arbitragePaths), 60);
+  
     // Cache individual tokens
     for (const pool of poolsWithAdditionalData) {
       cache.set(`token_${pool.tokenA.mint}`, pool.tokenA, tokenExpiry);
