@@ -64,19 +64,18 @@ export class TokenGraph {
     this.edges.get(tokenA)!.set(tokenB, data);
   }
 }
-
-export  function buildTokenGraphFromPools(pools: any[]): TokenGraph {
+export function buildTokenGraphFromPools(pools: any[]): TokenGraph {
   const graph = new TokenGraph();
   for (const pool of pools) {
     const tokenAMint = pool.tokenA.mint;
     const tokenBMint = pool.tokenB.mint;
 
-    const priceAB = parseFloat(pool.price); // Price of tokenA in terms of tokenB
-    const priceBA = 1 / priceAB; // Price of tokenB in terms of tokenA
+    const priceAB = parseFloat(pool.price);
+    const priceBA = 1 / priceAB;
 
     const edgeDataAB: EdgeData = {
       isWhirlpool: true,
-      optional: pool.optional,
+      optional: false, // Include all pools
       poolData: pool,
       tokenA: tokenAMint,
       tokenB: tokenBMint,
@@ -88,8 +87,8 @@ export  function buildTokenGraphFromPools(pools: any[]): TokenGraph {
 
     const edgeDataBA: EdgeData = {
       isWhirlpool: true,
+      optional: false, // Include all pools
       poolData: pool,
-      optional: pool.optional,
       tokenA: tokenBMint,
       tokenB: tokenAMint,
       poolAddress: pool.address,
@@ -98,7 +97,6 @@ export  function buildTokenGraphFromPools(pools: any[]): TokenGraph {
       hasTransferHook: pool.hasTransferHook,
     };
 
-    // Add edges in both directions with correct prices
     graph.addEdge(tokenAMint, tokenBMint, edgeDataAB);
     graph.addEdge(tokenBMint, tokenAMint, edgeDataBA);
   }
@@ -431,7 +429,6 @@ console.log(arbitrageOpportunities)
                 return poolData;
               }
             }
-            return null;
           } catch (error) {
             console.error(`Failed to process whirlpool ${account.pubkey.toString()}:`, error);
             return null;
