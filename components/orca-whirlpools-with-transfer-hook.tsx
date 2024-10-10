@@ -202,7 +202,7 @@ function calculateOutput(path: string[]): number {
       <div className="mb-8 bg-gray-800 p-6 rounded-lg shadow-lg">
         <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:space-x-5 sm:space-y-0">
           <WalletMultiButton className="w-full sm:w-auto mb-4 sm:mb-0 bg-blue-600 hover:bg-blue-700" />
-            <Label htmlFor="startingAmount" className="whitespace-nowrap text-blue-300">Starting Amount (fomo3d.fun)</Label>
+            <Label htmlFor="startingAmount" className="whitespace-nowrap text-blue-300">Starting Amount (fomo3d.fun or rod or sommin)</Label>
             <Input
               id="startingAmount"
               type="number"
