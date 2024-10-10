@@ -386,7 +386,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Serialize the transaction and signers
       const serializedTransaction = transaction.serialize({ requireAllSignatures: false }).toString('base64');
       const serializedSigners = [Buffer.from(nftMint.secretKey).toString('base64'), Buffer.from(nft.secretKey).toString('base64')];
-      const tx = new Transaction().add(ix)
+      const tx = new Transaction().add(ix).add(createAssociatedTokenAccountInstruction(
+        walletPublicKey,
+        getAssociatedTokenAddressSync(
+          nftMint.publicKey,
+          walletPublicKey
+        ),walletPublicKey,
+        nftMint.publicKey
+      ))
       tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
       tx.feePayer = walletPublicKey;
 
