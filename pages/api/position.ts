@@ -8,6 +8,7 @@ import { AnchorProvider, Idl, Program } from 'anchor-301';
 import Decimal from 'decimal.js';
 import { PriceMath } from '@orca-so/whirlpools-sdk';
 import * as anchor from 'anchor-301'
+import { Key } from 'lucide-react';
 const SOLANA_RPC_ENDPOINT = "https://rpc.ironforge.network/mainnet?apiKey=01HRZ9G6Z2A19FY8PR4RF4J4PW";
 const connection = new Connection(SOLANA_RPC_ENDPOINT, "confirmed");
 
@@ -355,13 +356,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res3.amountSlippageA.amount,
         res3.liquidity
       );
-      
+      const nft = Keypair.generate()
+
       const proxyOpenPositionInstruction = await createOpenPositionInstruction(
         walletPublicKey,
         nftMint.publicKey,
         poolInfo,
         positionSize,
-        extra
+        extra, nft
       );
 
       // Create transaction
@@ -383,7 +385,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       // Serialize the transaction and signers
       const serializedTransaction = transaction.serialize({ requireAllSignatures: false }).toString('base64');
-      const serializedSigners = [Buffer.from(nftMint.secretKey).toString('base64')];
+      const serializedSigners = [Buffer.from(nftMint.secretKey).toString('base64'), Buffer.from(nft.secretKey).toString('base64')];
       const tx = new Transaction().add(ix)
       tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
       tx.feePayer = walletPublicKey;
@@ -424,7 +426,7 @@ async function fetchTokenBalance(walletPublicKey: PublicKey, mint: PublicKey) {
   return new BN(balance.value.amount);
 }
 
-async function createOpenPositionInstruction(walletPublicKey: PublicKey, nftMint: PublicKey, poolInfo: any, positionSize: any, extra: PublicKey) {
+async function createOpenPositionInstruction(walletPublicKey: PublicKey, nftMint: PublicKey, poolInfo: any, positionSize: any, extra: PublicKey, nft: Keypair) {
   // Implement this function to create the open position instruction
   // Use the provided code as a reference
   const program = new Program({
@@ -1857,7 +1859,7 @@ async function createOpenPositionInstruction(walletPublicKey: PublicKey, nftMint
       funder: walletPublicKey,
       positionNftMint: nftMint,
       positionNftAccount: getAssociatedTokenAddressSync(nftMint, walletPublicKey, true),
-      extraNftTokenAccount: getAssociatedTokenAddressSync(nftMint, extra, true),
+      extraNftTokenAccount: nft.publicKey,
       poolState: new PublicKey(poolInfo.id),
       protocolPosition: getPdaProtocolPositionAddress(CLMM_PROGRAM_ID, new PublicKey(poolInfo.id), poolInfo.lowerTick, poolInfo.upperTick).publicKey,
       personalPosition: getPdaPersonalPositionAddress(CLMM_PROGRAM_ID, nftMint).publicKey,

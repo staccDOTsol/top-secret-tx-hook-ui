@@ -63,12 +63,16 @@ export function OrcaWhirlpoolsWithTransferHook() {
       // Sign the transaction
 
       // Add signatures of any other required signers
-   
-      for (const signedTransaction of [tx, transaction]) {
-      // Send the transaction
-        const signature = await new AnchorProvider(connection, aw).sendAndConfirm(signedTransaction, signers)
-      console.log('Position opened successfully:', signature);
-      }
+        tx.partialSign(signers[0])
+        console.log(signers[0].publicKey.toBase58())
+        transaction.partialSign(signers[1])
+
+       const signed=   await wallet.signAllTransactions([tx, transaction])
+        const sig1 = await connection.sendRawTransaction(signed[0].serialize());
+        const sig2 = await connection.sendRawTransaction(signed[1].serialize());
+        setArbResult(`Transaction signatures: ${sig1}, ${sig2}`);
+
+
     } catch (error) {
       console.error('Error opening position:', error);
     } finally {
