@@ -147,8 +147,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const sqrtPriceX64 = poolState.sqrtPriceX64;
       const currentTickIndex = poolState.tickCurrent;
       const price = PriceMath.tickIndexToPrice(currentTickIndex, poolInfo.mintA.decimals, poolInfo.mintB.decimals);
-      const targetPrice = price.mul(new Decimal(1.01)); // Set target price 1% higher
-      const [startPrice, endPrice] = [price.mul(new Decimal(0.99)), targetPrice]; // Price range from 1% below to 1% above current price
+      const targetPrice = price.mul(new Decimal(1.02)); // Set target price 1% higher
+      const [startPrice, endPrice] = [price.mul(new Decimal(0.98)), targetPrice]; // Price range from 1% below to 1% above current price
       console.log(`Current price: ${price.toFixed(6)}, Target price: ${targetPrice.toFixed(6)}`);
       console.log(`Price range: ${startPrice.toFixed(6)} - ${endPrice.toFixed(6)}`);
     
