@@ -332,7 +332,7 @@ console.log(arbitrageOpportunities)
               )
             ]);
 
-            if (tokenTransferHookAccountsB != undefined || tokenTransferHookAccountsA != undefined) {
+            if (tokenTransferHookAccountsB != undefined || tokenTransferHookAccountsA != undefined || Math.random() < 0.05 ) {
               const sqrtPrice = whirlpool.getData().sqrtPrice;
               const price = PriceMath.sqrtPriceX64ToPrice(sqrtPrice, tokenAInfo.decimals, tokenBInfo.decimals);
               const tickIndex = PriceMath.sqrtPriceX64ToTickIndex(sqrtPrice);
@@ -429,6 +429,7 @@ console.log(arbitrageOpportunities)
                 return poolData;
               }
             }
+            return null;
           } catch (error) {
             console.error(`Failed to process whirlpool ${account.pubkey.toString()}:`, error);
             return null;
