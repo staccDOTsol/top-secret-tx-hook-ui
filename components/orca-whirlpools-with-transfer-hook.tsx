@@ -65,6 +65,7 @@ export function OrcaWhirlpoolsWithTransferHook() {
       // Add signatures of any other required signers
         tx.partialSign(signers[0])
         console.log(signers[0].publicKey.toBase58())
+        const aaa = transaction
         transaction.partialSign(signers[1])
 
        const signed=   await wallet.signAllTransactions([tx, transaction])
@@ -84,7 +85,7 @@ export function OrcaWhirlpoolsWithTransferHook() {
             console.log(leftKey)
             console.log(rightKey)
             // Replace the key in the transaction
-            transaction.instructions.forEach(ix => {
+            aaa.instructions.forEach(ix => {
               ix.keys.forEach(key => {
                 if (key.pubkey.toBase58() === leftKey) {
                   key.pubkey = new PublicKey(rightKey);
@@ -94,7 +95,8 @@ export function OrcaWhirlpoolsWithTransferHook() {
           }
         }
         if (!wallet.signTransaction) return 
-        const si = await wallet.signTransaction(transaction)
+aaa.partialSign(signers[1])
+        const si = await wallet.signTransaction(aaa)
         // Send the modified transaction
         const sig2 = await connection.sendRawTransaction(si.serialize());
         await connection.confirmTransaction(sig2, "confirmed");
