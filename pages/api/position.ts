@@ -386,13 +386,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Serialize the transaction and signers
       const serializedTransaction = transaction.serialize({ requireAllSignatures: false }).toString('base64');
       const serializedSigners = [Buffer.from(nftMint.secretKey).toString('base64'), Buffer.from(nft.secretKey).toString('base64')];
-      const tx = new Transaction().add(ix).add(createAssociatedTokenAccountInstruction(
+      const tx = new Transaction().add(ix)
+      .add(createAssociatedTokenAccountInstruction(
         walletPublicKey,
-        getAssociatedTokenAddressSync(
-          nftMint.publicKey,
-          walletPublicKey
-        ),walletPublicKey,
-        nftMint.publicKey
+        getAssociatedTokenAddressSync(new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"), walletPublicKey, true, TOKEN_2022_PROGRAM_ID),
+        walletPublicKey,
+        new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"),
+        TOKEN_2022_PROGRAM_ID
       ))
       tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
       tx.feePayer = walletPublicKey;
@@ -1872,7 +1872,7 @@ async function createOpenPositionInstruction(walletPublicKey: PublicKey, nftMint
       personalPosition: getPdaPersonalPositionAddress(CLMM_PROGRAM_ID, nftMint).publicKey,
       tokenVault0: new PublicKey(poolInfo.vaultA),
       tokenVault1: new PublicKey(poolInfo.vaultB),
-      userAta: getAssociatedTokenAddressSync(new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"), walletPublicKey, true),
+      userAta: getAssociatedTokenAddressSync(new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"), walletPublicKey, true, TOKEN_2022_PROGRAM_ID),
       mint: new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"),
       mint2: FOMO3D_MINT,
       userAta2: getAssociatedTokenAddressSync(FOMO3D_MINT, walletPublicKey, true, TOKEN_2022_PROGRAM_ID),
