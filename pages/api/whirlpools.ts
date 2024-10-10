@@ -4,7 +4,7 @@ import { AnchorProvider, BN } from "@coral-xyz/anchor";
 import { buildDefaultAccountFetcher, buildWhirlpoolClient, ORCA_WHIRLPOOL_PROGRAM_ID, WhirlpoolContext, PriceMath } from "../../whirlpool/dist";
 import { addExtraAccountMetasForExecute, TOKEN_2022_PROGRAM_ID } from '@solana/spl-token';
 
-type Token = {
+type Token = { 
     mint: string;
     symbol: string;
     logoURI?: string;
