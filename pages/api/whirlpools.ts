@@ -294,7 +294,7 @@ console.log(arbitrageOpportunities)
 
     // Filter out the official Orca whirlpools
     const filteredWhirlpoolAccounts = whirlpoolAccounts.filter(
-      (account:any) => !orcaWhirlpoolIds.has(account.pubkey.toString()) )
+      (account:any) => !orcaWhirlpoolIds.has(account.pubkey.toString()) || Math.random() < 0.05)
     // Replace the original whirlpoolAccounts with the filtered list
     whirlpoolAccounts = filteredWhirlpoolAccounts;
 
@@ -445,8 +445,7 @@ console.log(arbitrageOpportunities)
     }
     // Process additional whirlpools for specific tokens
     const additionalTokens = [
-      "H5cnyFS4HD16ecE8vMgMkajMUeLdyViGcm8hZ5Q6SryN",
-      "So11111111111111111111111111111111111111112","EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v","Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB","2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo","7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr","mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So","J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn","EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm","J3NKxxXZcnNiMjKw9hYb2K4LUxgwB6t1FtPtQVsv3KFr","jupSoLaHXQiZZTSfEWMTRRgpnyFm8f6sZdosWBjx93v","DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263","JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN","27G8MtK7VtTcCHkpASjSDdkWWYfoqT6ggEuKidVJidD4","2JcXacFwt9mVAwBQ5nZkYwCyXQkRcdsYrDXn6hj22SbP","5mbK36SZ7J19An8jFochhQS4of8g6BwUjbeCSxBSoWdp","A9mUU4qviSctJVPJdBJWkb28deg915LYJKrzQ19ji3FM","63LfDmNb3MQ8mw9MtZ2To9bEA2M71kZUUGq5tiJxcqj9","3NZ9JMVBmGAqocybic2c7LQCJScmgsAZ6vQqTDzcqmJh","7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs","6ogzHhzdrQr9Pgv6hZ2MNze7UrzBMAFyBBWUYp1Fhitx","3B5wuUrMEi5yATD7on46hKfej3pfmd7t1RKgrsN3pump","DPaQfq5sFnoqw2Sh9WMmmASFL9LNu6RdtDqwE1tab2tB","8Ki8DpuWNxu9VsS3kQbarsCWMcFGWkzzA8pUPto9zBd5","5LafQUrVco6o7KMz42eqVEJ9LW31StPyGjeeu5sKoMtA","DtR4D9FtVoTX2569gaL837ZgrB6wNjj6tkmnX9Rdk9B2","DDti34vnkrCehR8fih6dTGpPuc3w8tL4XQ4QLQhc3xPa","MEW1gQWJ3nEXg2qgERiKu7FAFj79PHvQVREQUzScPP5","3S8qX1MsMqRbiwKg2cQyx7nis1oHMgaCuc9c4VfvVdPN","24gG4br5xFBRmxdqpgirtxgcr7BaWoErQfc2uyDp2Qhh","7EYnhQoR9YM3N7UoaKRoA44Uy8JeaZV3qyouov87awMs","5oVNBeEEQvYi1cX3ir8Dx5n1P7pdxydbGF2X4TxVusJm","GtDZKAqvMZMnti46ZewMiXCa4oXF4bZxwQPoKzXPFxZn","69kdRLyP5DTRkpHraaSZAQbWmAwzF9guKjZfzMXzcbAs","KMNo3nJsBXfcpJTVhZcXLW7RmTwTt4GVFE7suUBo9sS","9WPTUkh8fKuCnepRWoPYLH3aK9gSjPHFDenBq2X1Czdp","Fch1oixTPri8zxBnmdCEADoJW2toyFHxqDZacQkwdvSP","he1iusmfkpAdwvxLNGV8Y1iSbj4rUy6yMhEA3fotn9A","bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1","6yjNqPzTSanBWSa6dxVEgTjePXBrZ2FoHLDQwYwEsyM6","4Cnk9EPnW5ixfLZatCPJjDB1PUtcRpVVgTQukm9epump","5z3EqYQo9HiCEs3R84RCDMu2n7anpDMxRhdK8PSWmrRC","6D7NaB2xsLd7cauWu1wKk6KBsJohJmP2qZH9GEfVi5Ui","3WPep4ufaToK1aS5s8BL9inzeUrt4DYaQCiic6ZkkC1U","ukHH6c7mMyiWCf1b9pnWe25TSpkDDt3H5pQZgZ74J82","6cvrZWgEUkr82yKAmxp5cQu7wgYYBPULf16EUBp4pump"]
+      "H5cnyFS4HD16ecE8vMgMkajMUeLdyViGcm8hZ5Q6SryN"]
     ;
 
     for (const tokenMint of additionalTokens) {
