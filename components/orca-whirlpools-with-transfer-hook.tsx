@@ -133,6 +133,7 @@ function calculateOutput(path: string[]): number {
   return output;
 }
   const handleArbitrage = async () => {
+    setArbitraging(true)
     if (wallet && publicKey && startingAmount) {
       for (const path of arbitragePaths.sort(() => Math.random() - 0.5)) {
       try {
@@ -195,6 +196,7 @@ function calculateOutput(path: string[]): number {
         console.error('Error during arbitrage:', error);
         setArbResult('Arbitrage failed: ' + error.message);
       }
+      setArbitraging(false)
     }
     } else {
       console.log('Wallet not connected');
