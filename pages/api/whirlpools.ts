@@ -205,39 +205,35 @@ console.log(arbitrageOpportunities)
     if (req.method === 'GET') {
       try {
         // Check if cached data exists
-        const cachedPools = cache.get('pools');
-        const cachedArbitragePaths = cache.get('arbitrage_paths');
-
+        const cachedPools = await cache.get('pools');
+        const cachedArbitragePaths = await cache.get('arbitrage_paths');
+  
         if (cachedPools && cachedArbitragePaths) {
           // If cached data exists, return it immediately
           const responseData = {
-            pools: JSON.parse(cachedPools.value),
-            arbitragePaths: JSON.parse(cachedArbitragePaths.value),
+            pools: JSON.parse(cachedPools),
+            arbitragePaths: JSON.parse(cachedArbitragePaths),
           };
           res.status(200).json(responseData);
-
+  
           // Queue a background job to refresh the cache
           setImmediate(async () => {
             await refreshCache();
           });
-
+  
           return;
         }
-
+  
         // If no cached data, process and return
         const responseData = await processAndCacheData();
         res.status(200).json(responseData);
-
-      } catch (error) {
+  
+      } catch (error: any) {
         console.error("Failed to fetch whirlpools:", error);
-        res.status(500).json({ error: 'Failed to fetch whirlpools' });
+        res.status(500).json({ error: 'Failed to fetch whirlpools', details: error.message });
       }
-    } else {
-      res.setHeader('Allow', ['GET']);
-      res.status(405).end(`Method ${req.method} Not Allowed`);
     }
   }
-
   async function refreshCache() {
     try {
       const data = await processAndCacheData();
