@@ -9,9 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@coral-xyz/anchor": "0.30.1",
+    "anchor-301": "npm:@coral-xyz/anchor@0.30.1",
+    "@coral-xyz/anchor": "0.29.0",
     "@orca-so/common-sdk": "^0.6.3",
-    "@orca-so/whirlpools-sdk": "^0.13.7",
+    "@orca-so/whirlpools-sdk": "file:./whirlpool",
     "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-icons": "^1.3.0",

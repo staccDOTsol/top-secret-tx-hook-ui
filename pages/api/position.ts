@@ -7,7 +7,7 @@ import { createTransferCheckedWithTransferHookInstruction } from '@solana/spl-to
 import { AnchorProvider, Idl, Program } from '@coral-xyz/anchor';
 import Decimal from 'decimal.js';
 import { PriceMath } from '@orca-so/whirlpools-sdk';
-import * as anchor from '@coral-xyz/anchor'
+import * as anchor from 'anchor-301'
 const SOLANA_RPC_ENDPOINT = "https://rpc.ironforge.network/mainnet?apiKey=01HRZ9G6Z2A19FY8PR4RF4J4PW";
 const connection = new Connection(SOLANA_RPC_ENDPOINT, "confirmed");
 
