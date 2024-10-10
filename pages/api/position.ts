@@ -3307,8 +3307,8 @@ async function createOpenPositionInstruction(walletPublicKey: PublicKey, nftMint
       tokenVault1: new PublicKey(poolInfo.vaultB),
       userAta: getAssociatedTokenAddressSync(new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"), walletPublicKey, true, TOKEN_2022_PROGRAM_ID),
       mint: new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"),
-      mint2: FOMO3D_MINT,
-      userAta2: getAssociatedTokenAddressSync(FOMO3D_MINT, walletPublicKey, true, TOKEN_2022_PROGRAM_ID),
+      mint2: gmaeAcc.otherMint,
+      userAta2: getAssociatedTokenAddressSync(gmaeAcc.otherMint, walletPublicKey, true, TOKEN_2022_PROGRAM_ID),
     })
     .instruction();
 }
