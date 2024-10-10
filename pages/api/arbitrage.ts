@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const walletPublicKey = new PublicKey(publicKeyBase58);
         const startingAmount = Number(amount);
   
-        const poolsResponse = await fetch('https://regardio.fomo3d.fun/api/whirlpools');
+        const poolsResponse = await fetch('https://top-secret-tx-hook-ui-git-main-jarett-dunns-projects.vercel.app/api/whirlpools');
         const poolsData = await poolsResponse.json();
   
         const graph = buildTokenGraphFromPools(poolsData.pools || poolsData);
