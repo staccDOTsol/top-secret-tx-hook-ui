@@ -12,7 +12,7 @@ import {
 } from '@solana/web3.js';
 import { getAssociatedTokenAddressSync, NATIVE_MINT, createSyncNativeInstruction, createAssociatedTokenAccountInstruction, createCloseAccountInstruction,TOKEN_2022_PROGRAM_ID,addExtraAccountMetasForExecute } from '@solana/spl-token';
 import { buildTokenGraphFromPools, TokenGraph } from '../api/whirlpools'
-import { WhirlpoolContext, WhirlpoolIx, buildWhirlpoolClient, ORCA_WHIRLPOOL_PROGRAM_ID, buildDefaultAccountFetcher, MIN_SQRT_PRICE, MAX_SQRT_PRICE, TickArrayUtil, PDAUtil, TickUtil, PriceMath, MIN_TICK_INDEX, MAX_TICK_INDEX } from '../../whirlpool';
+import { WhirlpoolContext, WhirlpoolIx, buildWhirlpoolClient, ORCA_WHIRLPOOL_PROGRAM_ID, buildDefaultAccountFetcher, MIN_SQRT_PRICE, MAX_SQRT_PRICE, TickArrayUtil, PDAUtil, TickUtil, PriceMath, MIN_TICK_INDEX, MAX_TICK_INDEX } from '../../whirlpool/dist';
 import { BN } from 'bn.js';
 import { AnchorProvider } from '@coral-xyz/anchor';
 
