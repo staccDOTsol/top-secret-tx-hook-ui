@@ -10,28 +10,6 @@ type Token = {
     logoURI?: string;
   };
   
-  import sqlite3 from 'sqlite3';
-  import { open } from 'sqlite';
-  
-  // Initialize SQLite database
-  let db: any;
-  const initDb = async () => {
-    if (!db) {
-      db = await open({
-        filename: './whirlpools_cache.sqlite',
-        driver: sqlite3.Database
-      });
-  
-      // Create table if it doesn't exist
-      await db.exec(`
-        CREATE TABLE IF NOT EXISTS cache (
-          key TEXT PRIMARY KEY,
-          value TEXT,
-          expiry INTEGER
-        )
-      `);
-    }
-  };
   const SOLANA_RPC_ENDPOINT = "https://rpc.ironforge.network/mainnet?apiKey=01HRZ9G6Z2A19FY8PR4RF4J4PW";
 const JUPITER_API_URL = "https://quote-api.jup.ag";
 
@@ -220,15 +198,15 @@ console.log(arbitrageOpportunities)
     const extraAccountMetas = instruction.keys.slice(5);
     return extraAccountMetas.length > 0 ? extraAccountMetas : undefined;
   }
+  const NodeCache = require('node-cache');
+  const cache = new NodeCache({ stdTTL: 600 }); // Cache for 10 minutes
 
   export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'GET') {
       try {
-        await initDb();
-
         // Check if cached data exists
-        const cachedPools = await db.get('SELECT value FROM cache WHERE key = ?', ['pools']);
-        const cachedArbitragePaths = await db.get('SELECT value FROM cache WHERE key = ?', ['arbitrage_paths']);
+        const cachedPools = cache.get('pools');
+        const cachedArbitragePaths = cache.get('arbitrage_paths');
 
         if (cachedPools && cachedArbitragePaths) {
           // If cached data exists, return it immediately
@@ -271,7 +249,6 @@ console.log(arbitrageOpportunities)
 
   async function processAndCacheData() {
     
-    await initDb();
 
     const now = Date.now();
     const whirlpoolExpiry = now + 15 * 60 * 1000; // 15 minutes
@@ -287,19 +264,18 @@ console.log(arbitrageOpportunities)
     // Fetch all Whirlpool accounts
     let whirlpoolAccounts;
     const cacheKey = 'whirlpool_accounts';
-    const cachedAccounts = await db.get('SELECT value FROM cache WHERE key = ? AND expiry > ?', [cacheKey, Date.now()]);
+    const cachedAccounts = await NodeCache.get(cacheKey);
     
     if (cachedAccounts) {
-      whirlpoolAccounts = JSON.parse(cachedAccounts.value);
+      whirlpoolAccounts = JSON.parse(cachedAccounts);
     } else {
       whirlpoolAccounts = await connection.getProgramAccounts(new PublicKey("whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc"), {
         filters: [{ dataSize: 653 }],
       });
       
       // Cache the result for 30 minutes
-      const expiryTime = Date.now() + 30 * 60 * 1000; // 30 minutes
-      await db.run('INSERT OR REPLACE INTO cache (key, value, expiry) VALUES (?, ?, ?)', 
-        [cacheKey, JSON.stringify(whirlpoolAccounts), expiryTime]);
+      const expiryTime = 30 * 60; // 30 minutes in seconds
+      NodeCache.set(cacheKey, JSON.stringify(whirlpoolAccounts), expiryTime);
     }
     // Filter out the official Orca whirlpools
     const filteredWhirlpoolAccounts = whirlpoolAccounts
@@ -438,8 +414,7 @@ console.log(arbitrageOpportunities)
                   whirlpoolsConfig: whirlpoolData.whirlpoolsConfig.toString(),
                   sqrtPrice: whirlpoolData.sqrtPrice.toString(),
                 };
-                await db.run('INSERT OR REPLACE INTO cache (key, value, expiry) VALUES (?, ?, ?)', 
-                  [`whirlpool_${account.pubkey.toString()}`, JSON.stringify(poolData), whirlpoolExpiry]);
+                await cache.set(`whirlpool_${account.pubkey.toString()}`, poolData, whirlpoolExpiry);
                 return poolData;
               }
             }
@@ -586,17 +561,15 @@ console.log(arbitrageOpportunities)
               whirlpoolsConfig: whirlpoolData.whirlpoolsConfig.toString(),
               sqrtPrice: whirlpoolData.sqrtPrice.toString(),
             };
-            await db.run('INSERT OR REPLACE INTO cache (key, value, expiry) VALUES (?, ?, ?)', 
-              [`whirlpool_${new PublicKey(tokenMint).toString()}`, JSON.stringify(poolData), whirlpoolExpiry]);
-              processedPools.push(poolData);
-console.log(poolData)
+            processedPools.push(poolData);
+            console.log(poolData);
           }
       } catch (error) {
         console.error(`Failed to process whirlpool ${new PublicKey(tokenMint).toString()}:`, error);
         return null;
       }
-
     }
+
     // Fetch top tokens from Jupiter API
     const topTokens = ["So11111111111111111111111111111111111111112","EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v","Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB","2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo","7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr","mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So","J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn","EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm","J3NKxxXZcnNiMjKw9hYb2K4LUxgwB6t1FtPtQVsv3KFr","jupSoLaHXQiZZTSfEWMTRRgpnyFm8f6sZdosWBjx93v","DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263","JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN","27G8MtK7VtTcCHkpASjSDdkWWYfoqT6ggEuKidVJidD4","2JcXacFwt9mVAwBQ5nZkYwCyXQkRcdsYrDXn6hj22SbP","5mbK36SZ7J19An8jFochhQS4of8g6BwUjbeCSxBSoWdp","A9mUU4qviSctJVPJdBJWkb28deg915LYJKrzQ19ji3FM","63LfDmNb3MQ8mw9MtZ2To9bEA2M71kZUUGq5tiJxcqj9","3NZ9JMVBmGAqocybic2c7LQCJScmgsAZ6vQqTDzcqmJh","7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs","6ogzHhzdrQr9Pgv6hZ2MNze7UrzBMAFyBBWUYp1Fhitx","3B5wuUrMEi5yATD7on46hKfej3pfmd7t1RKgrsN3pump","DPaQfq5sFnoqw2Sh9WMmmASFL9LNu6RdtDqwE1tab2tB","8Ki8DpuWNxu9VsS3kQbarsCWMcFGWkzzA8pUPto9zBd5","5LafQUrVco6o7KMz42eqVEJ9LW31StPyGjeeu5sKoMtA","DtR4D9FtVoTX2569gaL837ZgrB6wNjj6tkmnX9Rdk9B2","DDti34vnkrCehR8fih6dTGpPuc3w8tL4XQ4QLQhc3xPa","MEW1gQWJ3nEXg2qgERiKu7FAFj79PHvQVREQUzScPP5","3S8qX1MsMqRbiwKg2cQyx7nis1oHMgaCuc9c4VfvVdPN","24gG4br5xFBRmxdqpgirtxgcr7BaWoErQfc2uyDp2Qhh","7EYnhQoR9YM3N7UoaKRoA44Uy8JeaZV3qyouov87awMs","5oVNBeEEQvYi1cX3ir8Dx5n1P7pdxydbGF2X4TxVusJm","GtDZKAqvMZMnti46ZewMiXCa4oXF4bZxwQPoKzXPFxZn","69kdRLyP5DTRkpHraaSZAQbWmAwzF9guKjZfzMXzcbAs","KMNo3nJsBXfcpJTVhZcXLW7RmTwTt4GVFE7suUBo9sS","9WPTUkh8fKuCnepRWoPYLH3aK9gSjPHFDenBq2X1Czdp","Fch1oixTPri8zxBnmdCEADoJW2toyFHxqDZacQkwdvSP","he1iusmfkpAdwvxLNGV8Y1iSbj4rUy6yMhEA3fotn9A","bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1","6yjNqPzTSanBWSa6dxVEgTjePXBrZ2FoHLDQwYwEsyM6","4Cnk9EPnW5ixfLZatCPJjDB1PUtcRpVVgTQukm9epump","5z3EqYQo9HiCEs3R84RCDMu2n7anpDMxRhdK8PSWmrRC","6D7NaB2xsLd7cauWu1wKk6KBsJohJmP2qZH9GEfVi5Ui","3WPep4ufaToK1aS5s8BL9inzeUrt4DYaQCiic6ZkkC1U","ukHH6c7mMyiWCf1b9pnWe25TSpkDDt3H5pQZgZ74J82","6cvrZWgEUkr82yKAmxp5cQu7wgYYBPULf16EUBp4pump"]
     const topTokenAddresses = new Set(topTokens.map((token: any) => token));
@@ -605,25 +578,20 @@ console.log(poolData)
 
     // Combine processed pools
     const poolsWithAdditionalData = processedPools.filter((pool: any) => pool !== null);
-    // Store tokens in cache
-    for (const pool of poolsWithAdditionalData) {
-      await db.run('INSERT OR REPLACE INTO cache (key, value, expiry) VALUES (?, ?, ?)', 
-        [`token_${pool.tokenA.mint}`, JSON.stringify(pool.tokenA), tokenExpiry]);
-      await db.run('INSERT OR REPLACE INTO cache (key, value, expiry) VALUES (?, ?, ?)', 
-        [`token_${pool.tokenB.mint}`, JSON.stringify(pool.tokenB), tokenExpiry]);
-    }
-
-    // Process and cache token graph and arbitrage paths
+    // Process token graph and arbitrage paths
     const tokenGraph = buildTokenGraphFromPools(poolsWithAdditionalData);
     const arbitragePaths = detectArbitrage(tokenGraph);
 
-    // Cache the results
-    await db.run('INSERT OR REPLACE INTO cache (key, value, expiry) VALUES (?, ?, ?)', 
-      ['pools', JSON.stringify(poolsWithAdditionalData), Date.now() + 60000]); // Cache for 1 minute
-    await db.run('INSERT OR REPLACE INTO cache (key, value, expiry) VALUES (?, ?, ?)', 
-      ['token_graph', JSON.stringify(tokenGraph), Date.now() + 60000]); // Cache for 1 minute
-    await db.run('INSERT OR REPLACE INTO cache (key, value, expiry) VALUES (?, ?, ?)', 
-      ['arbitrage_paths', JSON.stringify(arbitragePaths), Date.now() + 60000]); // Cache for 1 minute
+    // Cache the results using NodeCache
+    cache.set('pools', poolsWithAdditionalData, 60); // Cache for 1 minute
+    cache.set('token_graph', tokenGraph, 60); // Cache for 1 minute
+    cache.set('arbitrage_paths', arbitragePaths, 60); // Cache for 1 minute
+
+    // Cache individual tokens
+    for (const pool of poolsWithAdditionalData) {
+      cache.set(`token_${pool.tokenA.mint}`, pool.tokenA, tokenExpiry);
+      cache.set(`token_${pool.tokenB.mint}`, pool.tokenB, tokenExpiry);
+    }
 
     return {
       pools: poolsWithAdditionalData,
