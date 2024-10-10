@@ -301,14 +301,8 @@ console.log(arbitrageOpportunities)
       await db.run('INSERT OR REPLACE INTO cache (key, value, expiry) VALUES (?, ?, ?)', 
         [cacheKey, JSON.stringify(whirlpoolAccounts), expiryTime]);
     }
-    // Fetch the list of official Orca whirlpools
-    const response = await fetch('https://api.mainnet.orca.so/v1/whirlpool/list');
-    const orcaWhirlpools = await response.json();
-    const orcaWhirlpoolIds = new Set(orcaWhirlpools.whirlpools.map((p: any) => p.address));
-
     // Filter out the official Orca whirlpools
-    const filteredWhirlpoolAccounts = whirlpoolAccounts.filter(
-      (account:any) => !orcaWhirlpoolIds.has(account.pubkey.toString()) )
+    const filteredWhirlpoolAccounts = whirlpoolAccounts
     // Replace the original whirlpoolAccounts with the filtered list
     whirlpoolAccounts = filteredWhirlpoolAccounts;
 
@@ -604,118 +598,13 @@ console.log(poolData)
 
     }
     // Fetch top tokens from Jupiter API
-    const topTokens = await (await fetch('https://cache.jup.ag/top-tokens')).json() as any;
+    const topTokens = ["So11111111111111111111111111111111111111112","EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v","Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB","2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo","7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr","mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So","J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn","EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm","J3NKxxXZcnNiMjKw9hYb2K4LUxgwB6t1FtPtQVsv3KFr","jupSoLaHXQiZZTSfEWMTRRgpnyFm8f6sZdosWBjx93v","DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263","JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN","27G8MtK7VtTcCHkpASjSDdkWWYfoqT6ggEuKidVJidD4","2JcXacFwt9mVAwBQ5nZkYwCyXQkRcdsYrDXn6hj22SbP","5mbK36SZ7J19An8jFochhQS4of8g6BwUjbeCSxBSoWdp","A9mUU4qviSctJVPJdBJWkb28deg915LYJKrzQ19ji3FM","63LfDmNb3MQ8mw9MtZ2To9bEA2M71kZUUGq5tiJxcqj9","3NZ9JMVBmGAqocybic2c7LQCJScmgsAZ6vQqTDzcqmJh","7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs","6ogzHhzdrQr9Pgv6hZ2MNze7UrzBMAFyBBWUYp1Fhitx","3B5wuUrMEi5yATD7on46hKfej3pfmd7t1RKgrsN3pump","DPaQfq5sFnoqw2Sh9WMmmASFL9LNu6RdtDqwE1tab2tB","8Ki8DpuWNxu9VsS3kQbarsCWMcFGWkzzA8pUPto9zBd5","5LafQUrVco6o7KMz42eqVEJ9LW31StPyGjeeu5sKoMtA","DtR4D9FtVoTX2569gaL837ZgrB6wNjj6tkmnX9Rdk9B2","DDti34vnkrCehR8fih6dTGpPuc3w8tL4XQ4QLQhc3xPa","MEW1gQWJ3nEXg2qgERiKu7FAFj79PHvQVREQUzScPP5","3S8qX1MsMqRbiwKg2cQyx7nis1oHMgaCuc9c4VfvVdPN","24gG4br5xFBRmxdqpgirtxgcr7BaWoErQfc2uyDp2Qhh","7EYnhQoR9YM3N7UoaKRoA44Uy8JeaZV3qyouov87awMs","5oVNBeEEQvYi1cX3ir8Dx5n1P7pdxydbGF2X4TxVusJm","GtDZKAqvMZMnti46ZewMiXCa4oXF4bZxwQPoKzXPFxZn","69kdRLyP5DTRkpHraaSZAQbWmAwzF9guKjZfzMXzcbAs","KMNo3nJsBXfcpJTVhZcXLW7RmTwTt4GVFE7suUBo9sS","9WPTUkh8fKuCnepRWoPYLH3aK9gSjPHFDenBq2X1Czdp","Fch1oixTPri8zxBnmdCEADoJW2toyFHxqDZacQkwdvSP","he1iusmfkpAdwvxLNGV8Y1iSbj4rUy6yMhEA3fotn9A","bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1","6yjNqPzTSanBWSa6dxVEgTjePXBrZ2FoHLDQwYwEsyM6","4Cnk9EPnW5ixfLZatCPJjDB1PUtcRpVVgTQukm9epump","5z3EqYQo9HiCEs3R84RCDMu2n7anpDMxRhdK8PSWmrRC","6D7NaB2xsLd7cauWu1wKk6KBsJohJmP2qZH9GEfVi5Ui","3WPep4ufaToK1aS5s8BL9inzeUrt4DYaQCiic6ZkkC1U","ukHH6c7mMyiWCf1b9pnWe25TSpkDDt3H5pQZgZ74J82","6cvrZWgEUkr82yKAmxp5cQu7wgYYBPULf16EUBp4pump"]
     const topTokenAddresses = new Set(topTokens.map((token: any) => token));
 
     // Fetch Orca whirlpools
-    const orcaWhirlpoolsResponse = await fetch('https://api.mainnet.orca.so/v1/whirlpool/list');
-    const orcaWhirlpools2 = await orcaWhirlpoolsResponse.json();
-
-    // Filter and process Orca whirlpools
-    const orcaProcessedPools2 = [];
-    const batchSize = 100;
-    for (let i = 0; i < orcaWhirlpools2.whirlpools.length; i += batchSize) {
-      const batch = orcaWhirlpools2.whirlpools.slice(i, i + batchSize);
-      const batchResults = await Promise.all(batch
-        .filter((pool: any) => {
-          console.log(pool.tokenA)
-          const isTopToken = topTokenAddresses.has(pool.tokenA.mint) && topTokenAddresses.has(pool.tokenB.mint);
-          const isSpecialToken = pool.tokenA.mint === "BQpGv6LVWG1JRm1NdjerNSFdChMdAULJr3x9t2Swpump" || pool.tokenB.mint === "BQpGv6LVWG1JRm1NdjerNSFdChMdAULJr3x9t2Swpump";
-          return isTopToken || isSpecialToken;
-        })
-        .map(async (pool: any) => {
-          try {
-            const [tokenAMetadata, tokenBMetadata] = await Promise.all([
-              fetch(`https://mainnet.helius-rpc.com/?api-key=0d4b4fd6-c2fc-4f55-b615-a23bab1ffc85`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  jsonrpc: '2.0',
-                  id: 'my-id',
-                  method: 'getAsset',
-                  params: {
-                    id: pool.tokenA.mint,
-                    displayOptions: {
-                      showFungible: true
-                    }
-                  }
-                })
-              }).then(res => res.json()),
-              fetch(`https://mainnet.helius-rpc.com/?api-key=0d4b4fd6-c2fc-4f55-b615-a23bab1ffc85`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  jsonrpc: '2.0',
-                  id: 'my-id',
-                  method: 'getAsset',
-                  params: {
-                    id: pool.tokenB.mint,
-                    displayOptions: {
-                      showFungible: true
-                    }
-                  }
-                })
-              }).then(res => res.json())
-            ]);
-            const whirlpoolData = await client.getPool(new PublicKey(pool.address))
-            const tokenAInfo = whirlpoolData.getTokenAInfo()
-            const tokenBInfo = whirlpoolData.getTokenBInfo()
-            const poolData = {
-              optional: tokenAInfo.mint.toString() === 'BQpGv6LVWG1JRm1NdjerNSFdChMdAULJr3x9t2Swpump' || tokenBInfo.mint.toString() === 'BQpGv6LVWG1JRm1NdjerNSFdChMdAULJr3x9t2Swpump' ? false : true,
-              address: pool.address,
-              tokenA: {
-                decimals: tokenAInfo.decimals,
-                transferHookAccounts: [],
-                metadata: {
-                  content: tokenAMetadata.result?.content,
-                  attributes: tokenAMetadata.result?.attributes,
-                  offChainData: tokenAMetadata.result?.offChainData,
-                  imageUrl: tokenAMetadata.result?.content?.files?.[0]?.uri || tokenAMetadata.result?.content?.json?.image || "Unknown",
-                },
-                mint: tokenAInfo.mint.toString(),
-                symbol: tokenAMetadata.result?.token_info?.symbol || tokenAMetadata.result?.content?.metadata?.symbol || "Unknown",
-                name: tokenAMetadata.result?.content?.metadata?.name || "Unknown",
-                vault: whirlpoolData.getData().tokenVaultA.toString(),
-                feeGrowthGlobal: whirlpoolData.getData().feeGrowthGlobalA.toString(),
-              },
-              tokenB: {
-                decimals: tokenBInfo.decimals,
-                transferHookAccounts: [],
-                metadata: {
-                  content: tokenBMetadata.result?.content,
-                  attributes: tokenBMetadata.result?.attributes,
-                  offChainData: tokenBMetadata.result?.offChainData,
-                  imageUrl: tokenBMetadata.result?.content?.files?.[0]?.uri || tokenBMetadata.result?.content?.json?.image || "Unknown",
-                },
-                mint: tokenBInfo.mint.toString(),
-                symbol: tokenBMetadata.result?.token_info?.symbol || tokenBMetadata.result?.content?.metadata?.symbol || "Unknown",
-                name: tokenBMetadata.result?.content?.metadata?.name || "Unknown",
-                vault: whirlpoolData.getData().tokenVaultB.toString(),
-                feeGrowthGlobal: whirlpoolData.getData().feeGrowthGlobalB.toString(),
-              },
-              liquidity: pool.liquidity,
-              tickSpacing: pool.tickSpacing,
-              price: pool.price,
-              tvl: pool.tvl,
-              volume24h: pool.volume24h,
-              hasTransferHook: false,
-              token2022: false,
-              tickIndex: pool.tickCurrentIndex,
-            };
-            await db.run('INSERT OR REPLACE INTO cache (key, value, expiry) VALUES (?, ?, ?)', 
-              [`whirlpool_${pool.address}`, JSON.stringify(poolData), whirlpoolExpiry]);
-            return poolData;
-          } catch (error) {
-            console.error(`Failed to process pool ${pool.address}:`, error);
-            return null;
-          }
-        }));
-      orcaProcessedPools2.push(...batchResults.filter(result => result !== null));
-    }
 
     // Combine processed pools
     const poolsWithAdditionalData = processedPools.filter((pool: any) => pool !== null);
-    poolsWithAdditionalData.push(...orcaProcessedPools2);
     // Store tokens in cache
     for (const pool of poolsWithAdditionalData) {
       await db.run('INSERT OR REPLACE INTO cache (key, value, expiry) VALUES (?, ?, ?)', 
