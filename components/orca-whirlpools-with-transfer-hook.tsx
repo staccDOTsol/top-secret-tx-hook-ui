@@ -15,7 +15,7 @@ import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { Dialog, DialogContent, DialogTitle } from '@radix-ui/react-dialog';
 import { DialogHeader } from './ui/dialog';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
-import { AnchorProvider } from '@coral-xyz/anchor';
+import { AnchorProvider } from 'anchor-301'
 
 const SOLANA_RPC_ENDPOINT = "https://rpc.ironforge.network/mainnet?apiKey=01HRZ9G6Z2A19FY8PR4RF4J4PW";
 const connection = new Connection(SOLANA_RPC_ENDPOINT, "confirmed");
