@@ -264,7 +264,7 @@ console.log(arbitrageOpportunities)
     // Fetch all Whirlpool accounts
     let whirlpoolAccounts;
     const cacheKey = 'whirlpool_accounts';
-    const cachedAccounts = await NodeCache.get(cacheKey);
+    const cachedAccounts = await cache.get(cacheKey);
     
     if (cachedAccounts) {
       whirlpoolAccounts = JSON.parse(cachedAccounts);
@@ -275,7 +275,7 @@ console.log(arbitrageOpportunities)
       
       // Cache the result for 30 minutes
       const expiryTime = 30 * 60; // 30 minutes in seconds
-      NodeCache.set(cacheKey, JSON.stringify(whirlpoolAccounts), expiryTime);
+      cache.set(cacheKey, JSON.stringify(whirlpoolAccounts), expiryTime);
     }
     // Filter out the official Orca whirlpools
     const filteredWhirlpoolAccounts = whirlpoolAccounts
