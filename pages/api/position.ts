@@ -56,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const tokenBalance = await fetchTokenBalance(walletPublicKey, FOMO3D_MINT);
 
       // Calculate position size (1/100 of balance)
-      const positionSize = tokenBalance.div(new BN(100));
+      const positionSize = tokenBalance.div(new BN(10));
 
       // Generate a new NFT mint for the position
 
