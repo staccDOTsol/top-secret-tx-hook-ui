@@ -501,15 +501,7 @@ const program = new Program({
         },
         {
           "name": "position_info",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "account",
-                "path": "pool_state"
-              }
-            ]
-          }
+          "writable": true
         },
         {
           "name": "game",
@@ -2308,15 +2300,7 @@ async function createOpenPositionInstruction(walletPublicKey: PublicKey, nftMint
           },
           {
             "name": "position_info",
-            "writable": true,
-            "pda": {
-              "seeds": [
-                {
-                  "kind": "account",
-                  "path": "pool_state"
-                }
-              ]
-            }
+            "writable": true
           },
           {
             "name": "game",
@@ -3295,6 +3279,9 @@ async function createOpenPositionInstruction(walletPublicKey: PublicKey, nftMint
         Buffer.from('extra-account-metas'),
         gmaeAcc.otherMint.toBuffer()
       ], PROGRAM_ID)[0],
+      positionInfo: PublicKey.findProgramAddressSync([
+        Buffer.from(poolInfo.tickCurrent.toBuffer('le', 4))
+      ], program.programId),
       extraTokenAccount0: getAssociatedTokenAddressSync(new PublicKey(poolInfo.mintA.address), extra, true),
       extraTokenAccount1: getAssociatedTokenAddressSync(new PublicKey(poolInfo.mintB.address), extra, true),
       funder: walletPublicKey,
