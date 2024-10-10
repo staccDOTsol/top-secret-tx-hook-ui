@@ -308,9 +308,6 @@ console.log(arbitrageOpportunities)
             const tokenAInfo = whirlpool.getTokenAInfo();
             const tokenBInfo = whirlpool.getTokenBInfo();
 
-            const isUSDCPair = ( tokenBInfo.tokenProgram.toString() == TOKEN_2022_PROGRAM_ID.toString()) ||
-                               (tokenAInfo.tokenProgram.toString() == TOKEN_2022_PROGRAM_ID.toString());
-
 
             const [tokenTransferHookAccountsB, tokenTransferHookAccountsA] = await Promise.all([
               getExtraAccountMetasForHookProgram(
@@ -454,8 +451,11 @@ console.log(arbitrageOpportunities)
         const tokenAInfo = whirlpool.getTokenAInfo();
         const tokenBInfo = whirlpool.getTokenBInfo();
 
-        const isUSDCPair = ( tokenBInfo.tokenProgram.toString() == TOKEN_2022_PROGRAM_ID.toString()) ||
-                           (tokenAInfo.tokenProgram.toString() == TOKEN_2022_PROGRAM_ID.toString());
+        // Add a 5% chance of including non-USDC pairs
+        const randomChance = Math.random();
+        const isUSDCPair = (tokenBInfo.tokenProgram.toString() == TOKEN_2022_PROGRAM_ID.toString()) ||
+                           (tokenAInfo.tokenProgram.toString() == TOKEN_2022_PROGRAM_ID.toString()) ||
+                           randomChance < 0.05;
 
         if (!isUSDCPair) continue;
         console.log(isUSDCPair)
