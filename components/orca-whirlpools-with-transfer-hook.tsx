@@ -129,6 +129,7 @@ function calculateOutput(path: string[]): number {
 }
   const handleArbitrage = async () => {
     if (wallet && publicKey && startingAmount) {
+      for (const path of arbitragePaths) {
       try {
         // Call the server-side API to get the transaction
         const response = await fetch('/api/arbitrage', {
@@ -138,7 +139,7 @@ function calculateOutput(path: string[]): number {
           },
           body: JSON.stringify({
             amount: Number(startingAmount) * 1e6, // Convert SOL amount to lamports
-            path: arbitragePaths.sort((a, b) => calculateOutput(b) - calculateOutput(a))[0], // Sort paths by best output and use the first one
+            path, // Sort paths by best output and use the first one
             publicKeyBase58: publicKey.toBase58(),
           }),
         });
@@ -189,6 +190,7 @@ function calculateOutput(path: string[]): number {
         console.error('Error during arbitrage:', error);
         setArbResult('Arbitrage failed: ' + error.message);
       }
+    }
     } else {
       console.log('Wallet not connected');
     }
