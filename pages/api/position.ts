@@ -1796,11 +1796,7 @@ const gameAcc = await program.account.game.fetch(game)
         .add(proxyOpenPositionInstruction);
 
       // Add any necessary ATA creation instructions
-      const ataInstructions = await createNecessaryATAs(walletPublicKey, poolInfo, FOMO3D_MINT, gameAcc.otherMint, gameAcc.mint);
-      if (ataInstructions.length > 0){
-      transaction.add(...ataInstructions);
-      }
-
+   
       transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
       transaction.feePayer = walletPublicKey;
 
@@ -1808,6 +1804,11 @@ const gameAcc = await program.account.game.fetch(game)
       const serializedTransaction = transaction.serialize({ requireAllSignatures: false }).toString('base64');
       const serializedSigners = [Buffer.from(nftMint.secretKey).toString('base64'), Buffer.from(nft.secretKey).toString('base64')];
       const tx = new Transaction().add(ix)
+      const ataInstructions = await createNecessaryATAs(walletPublicKey, poolInfo, FOMO3D_MINT, gameAcc.otherMint, gameAcc.mint);
+      if (ataInstructions.length > 0){
+      tx.add(...ataInstructions);
+      }
+
       const aiMaybe = await connection.getAccountInfo(getAssociatedTokenAddressSync(new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"), walletPublicKey, true, TOKEN_2022_PROGRAM_ID))
       if (!aiMaybe){
       tx.add(createAssociatedTokenAccountInstruction(
@@ -3318,9 +3319,6 @@ async function createNecessaryATAs(walletPublicKey: PublicKey, poolInfo: any, fo
   const instructions = [];
 
   const atas = [
-    getAssociatedTokenAddressSync(new PublicKey(poolInfo.mintA.address), walletPublicKey, true),
-    getAssociatedTokenAddressSync(new PublicKey(poolInfo.mintB.address), walletPublicKey, true),
-    getAssociatedTokenAddressSync(fomo3dMint, walletPublicKey, true),
     getAssociatedTokenAddressSync(minta, walletPublicKey, true, TOKEN_2022_PROGRAM_ID),
     getAssociatedTokenAddressSync(mintb, walletPublicKey, true, TOKEN_2022_PROGRAM_ID)
   ];
@@ -3338,6 +3336,24 @@ async function createNecessaryATAs(walletPublicKey: PublicKey, poolInfo: any, fo
       );
     }
   }
+  const ata22s = [
 
+    getAssociatedTokenAddressSync(new PublicKey(poolInfo.mintA.address), walletPublicKey, true),
+    getAssociatedTokenAddressSync(new PublicKey(poolInfo.mintB.address), walletPublicKey, true),
+    getAssociatedTokenAddressSync(fomo3dMint, walletPublicKey, true),
+  ]
+
+  for (const ata of ata22s) {
+    if (!(await connection.getAccountInfo(ata))) {
+      instructions.push(
+        createAssociatedTokenAccountInstruction(
+          walletPublicKey,
+          ata,
+          walletPublicKey,
+          new PublicKey(poolInfo.mintA),
+        )
+      );
+    }
+  }
   return instructions;
 }
