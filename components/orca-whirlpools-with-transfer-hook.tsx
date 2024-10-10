@@ -69,7 +69,7 @@ export function OrcaWhirlpoolsWithTransferHook() {
 
        const signed=   await wallet.signAllTransactions([tx, transaction])
         const sig1 = await connection.sendRawTransaction(signed[0].serialize());
-        await new Promise(resolve => setTimeout(resolve, 10000)); // Wait for 10 seconds
+        await new Promise(resolve => setTimeout(resolve, 15000)); // Wait for 10 seconds
         // Simulate the transaction
         const simulationResult = await connection.simulateTransaction(signed[1]);
         
