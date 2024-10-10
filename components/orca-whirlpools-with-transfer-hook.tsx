@@ -70,7 +70,32 @@ export function OrcaWhirlpoolsWithTransferHook() {
        const signed=   await wallet.signAllTransactions([tx, transaction])
         const sig1 = await connection.sendRawTransaction(signed[0].serialize());
         await connection.confirmTransaction(sig1, "recent")
-        const sig2 = await connection.sendRawTransaction(signed[1].serialize());
+        // Simulate the transaction
+        const simulationResult = await connection.simulateTransaction(signed[1]);
+        
+        // Extract logs from simulation
+        const logs = simulationResult.value.logs;
+        if (logs) {
+          const errorLog = logs.find(log => log.includes("AnchorError caused by account: position_info. Error Code: ConstraintSeeds."));
+          if (errorLog) {
+            const leftKey = logs[logs.indexOf(errorLog) + 2].split(": ")[1].trim();
+            const rightKey = logs[logs.indexOf(errorLog) + 4].split(": ")[1].trim();
+            
+            // Replace the key in the transaction
+            transaction.instructions.forEach(ix => {
+              ix.keys.forEach(key => {
+                if (key.pubkey.toBase58() === leftKey) {
+                  key.pubkey = new PublicKey(rightKey);
+                }
+              });
+            });
+          }
+        }
+        if (!wallet.signTransaction) return 
+        const si = await wallet.signTransaction(transaction)
+        // Send the modified transaction
+        const sig2 = await connection.sendRawTransaction(si.serialize());
+        await connection.confirmTransaction(sig2, "confirmed");
         setArbResult(`Transaction signatures: ${sig1}, ${sig2}`);
 
 
