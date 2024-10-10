@@ -56,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const tokenBalance = await fetchTokenBalance(walletPublicKey, FOMO3D_MINT);
 
       // Calculate position size (1/100 of balance)
-      const positionSize = tokenBalance.div(new BN(10));
+      const positionSize = tokenBalance.div(new BN(100));
 
       // Generate a new NFT mint for the position
 
@@ -401,9 +401,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!aiMaybe2){
       tx.add(createAssociatedTokenAccountInstruction(
         walletPublicKey,
-        (getAssociatedTokenAddressSync(FOMO3D_MINT, walletPublicKey, true, TOKEN_2022_PROGRAM_ID)),
+        getAssociatedTokenAddressSync(new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"), walletPublicKey, true, TOKEN_2022_PROGRAM_ID),
         walletPublicKey,
-        FOMO3D_MINT,
+        new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"),
         TOKEN_2022_PROGRAM_ID
       ))
     }
