@@ -59,9 +59,1430 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const positionSize = tokenBalance.div(new BN(10));
 
       // Generate a new NFT mint for the position
-
+const [game] =  PublicKey.findProgramAddressSync(
+  [Buffer.from("gg"), new PublicKey(pool.id).toBuffer()],
+  PROGRAM_ID
+);
+const program = new Program({
+  "address": "AxaViNQ6EwvHuhAXXgsHkjAVXJdRTemYJeJEepaT8zDX",
+  "metadata": {
+    "name": "transfer_hook",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "initialize_first_extra_account_meta_list",
+      "discriminator": [
+        185,
+        251,
+        26,
+        42,
+        158,
+        213,
+        203,
+        103
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "extra_account_meta_list",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  120,
+                  116,
+                  114,
+                  97,
+                  45,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "solana_safer_mewn_extra_account_meta_list",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  120,
+                  116,
+                  114,
+                  97,
+                  45,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "other_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_program_2022",
+          "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+        },
+        {
+          "name": "other_mint"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "pool_state"
+              }
+            ]
+          }
+        },
+        {
+          "name": "nft_account",
+          "writable": true
+        },
+        {
+          "name": "pool_state",
+          "writable": true
+        },
+        {
+          "name": "extra_token_account_0"
+        },
+        {
+          "name": "extra_token_account_1"
+        },
+        {
+          "name": "raydium_amm_v3_program"
+        },
+        {
+          "name": "token_2022_program",
+          "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "position"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize_second_extra_account_meta_list",
+      "discriminator": [
+        222,
+        114,
+        208,
+        10,
+        49,
+        246,
+        98,
+        103
+      ],
+      "accounts": [
+        {
+          "name": "funder",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "extra_account_meta_list",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  120,
+                  116,
+                  114,
+                  97,
+                  45,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "solana_safer_mewn_extra_account_meta_list",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  120,
+                  116,
+                  114,
+                  97,
+                  45,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "solana_safer_mewn"
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_program_2022",
+          "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "solana_safer_mewn"
+        },
+        {
+          "name": "mint_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  105,
+                  110,
+                  116,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "pool_state"
+              }
+            ]
+          }
+        },
+        {
+          "name": "raydium_amm_v3_program"
+        },
+        {
+          "name": "nft_account",
+          "writable": true
+        },
+        {
+          "name": "pool_state",
+          "writable": true
+        },
+        {
+          "name": "protocol_position",
+          "writable": true
+        },
+        {
+          "name": "personal_position",
+          "writable": true
+        },
+        {
+          "name": "token_account0",
+          "writable": true
+        },
+        {
+          "name": "token_account1",
+          "writable": true
+        },
+        {
+          "name": "token_vault0",
+          "writable": true
+        },
+        {
+          "name": "token_vault1",
+          "writable": true
+        },
+        {
+          "name": "tick_array_lower",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "position_info"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "open_position",
+      "discriminator": [
+        135,
+        128,
+        47,
+        77,
+        15,
+        152,
+        240,
+        49
+      ],
+      "accounts": [
+        {
+          "name": "funder",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "position_nft_mint",
+          "writable": true
+        },
+        {
+          "name": "position_nft_account",
+          "writable": true
+        },
+        {
+          "name": "extra_nft_token_account",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "pool_state",
+          "writable": true
+        },
+        {
+          "name": "protocol_position",
+          "writable": true
+        },
+        {
+          "name": "personal_position",
+          "writable": true
+        },
+        {
+          "name": "extra_token_account_0",
+          "writable": true
+        },
+        {
+          "name": "extra_token_account_1",
+          "writable": true
+        },
+        {
+          "name": "token_vault_0",
+          "writable": true
+        },
+        {
+          "name": "token_vault_1",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "raydium_amm_v3_program",
+          "address": "CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK"
+        },
+        {
+          "name": "position_info",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "pool_state"
+              }
+            ]
+          }
+        },
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "pool_state"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program_2022",
+          "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+        },
+        {
+          "name": "mint",
+          "writable": true
+        },
+        {
+          "name": "mint_2",
+          "writable": true
+        },
+        {
+          "name": "extra_account_meta_list",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  120,
+                  116,
+                  114,
+                  97,
+                  45,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_ata_2",
+          "writable": true
+        },
+        {
+          "name": "user_ata",
+          "writable": true
+        },
+        {
+          "name": "mint_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  105,
+                  110,
+                  116,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "safe"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "process_game_data",
+      "discriminator": [
+        133,
+        3,
+        246,
+        229,
+        164,
+        19,
+        15,
+        208
+      ],
+      "accounts": [
+        {
+          "name": "extra_account_meta_list",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "position_ref_2",
+          "type": "u64"
+        },
+        {
+          "name": "position_ref_1",
+          "type": "i32"
+        },
+        {
+          "name": "position_ref_0",
+          "type": "i32"
+        },
+        {
+          "name": "ref_0",
+          "type": "i32"
+        },
+        {
+          "name": "ref_1",
+          "type": "i32"
+        },
+        {
+          "name": "tick_spacing",
+          "type": "u16"
+        },
+        {
+          "name": "account_metas_address_configs",
+          "type": {
+            "vec": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "transfer_hook",
+      "discriminator": [
+        220,
+        57,
+        220,
+        152,
+        126,
+        125,
+        97,
+        168
+      ],
+      "accounts": [
+        {
+          "name": "source_token"
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "destination_token"
+        },
+        {
+          "name": "owner"
+        },
+        {
+          "name": "extra_account_meta_list",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  120,
+                  116,
+                  114,
+                  97,
+                  45,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "safe",
+          "writable": true
+        },
+        {
+          "name": "game_or_ray"
+        },
+        {
+          "name": "nft_account"
+        },
+        {
+          "name": "pool_state",
+          "writable": true
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "protocol_position",
+          "writable": true
+        },
+        {
+          "name": "personal_position",
+          "writable": true
+        },
+        {
+          "name": "token_account0",
+          "writable": true
+        },
+        {
+          "name": "token_account1",
+          "writable": true
+        },
+        {
+          "name": "token_vault0",
+          "writable": true
+        },
+        {
+          "name": "token_vault1",
+          "writable": true
+        },
+        {
+          "name": "tick_array_lower",
+          "writable": true
+        },
+        {
+          "name": "ecosystem_transfer_hook_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "transfer_hook_update2",
+      "discriminator": [
+        146,
+        174,
+        181,
+        36,
+        19,
+        192,
+        92,
+        223
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "extra_account_meta_list",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  120,
+                  116,
+                  114,
+                  97,
+                  45,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "transfer_hook_program_id"
+        },
+        {
+          "name": "mint",
+          "writable": true
+        },
+        {
+          "name": "token_program_2022",
+          "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Game",
+      "discriminator": [
+        27,
+        90,
+        166,
+        125,
+        74,
+        100,
+        121,
+        18
+      ]
+    },
+    {
+      "name": "PersonalPositionState",
+      "discriminator": [
+        70,
+        111,
+        150,
+        126,
+        230,
+        15,
+        25,
+        117
+      ]
+    },
+    {
+      "name": "PoolState",
+      "discriminator": [
+        247,
+        237,
+        227,
+        245,
+        215,
+        195,
+        222,
+        70
+      ]
+    },
+    {
+      "name": "PositionInfo",
+      "discriminator": [
+        78,
+        184,
+        87,
+        177,
+        69,
+        87,
+        87,
+        153
+      ]
+    }
+  ],
+  "types": [
+    {
+      "name": "Game",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "other_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "total_deposited_a",
+            "type": "u64"
+          },
+          {
+            "name": "total_deposited_b",
+            "type": "u64"
+          },
+          {
+            "name": "total_liquidity_a",
+            "type": "u64"
+          },
+          {
+            "name": "total_liquidity_b",
+            "type": "u64"
+          },
+          {
+            "name": "total_fee_a",
+            "type": "u64"
+          },
+          {
+            "name": "total_fee_b",
+            "type": "u64"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PersonalPositionState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "docs": [
+              "Bump to identify PDA"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "nft_mint",
+            "docs": [
+              "Mint address of the tokenized position"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "pool_id",
+            "docs": [
+              "The ID of the pool with which this token is connected"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "tick_lower_index",
+            "docs": [
+              "The lower bound tick of the position"
+            ],
+            "type": "i32"
+          },
+          {
+            "name": "tick_upper_index",
+            "docs": [
+              "The upper bound tick of the position"
+            ],
+            "type": "i32"
+          },
+          {
+            "name": "liquidity",
+            "docs": [
+              "The amount of liquidity owned by this position"
+            ],
+            "type": "u128"
+          },
+          {
+            "name": "fee_growth_inside_0_last_x64",
+            "docs": [
+              "The token_0 fee growth of the aggregate position as of the last action on the individual position"
+            ],
+            "type": "u128"
+          },
+          {
+            "name": "fee_growth_inside_1_last_x64",
+            "docs": [
+              "The token_1 fee growth of the aggregate position as of the last action on the individual position"
+            ],
+            "type": "u128"
+          },
+          {
+            "name": "token_fees_owed_0",
+            "docs": [
+              "The fees owed to the position owner in token_0, as of the last computation"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "token_fees_owed_1",
+            "docs": [
+              "The fees owed to the position owner in token_1, as of the last computation"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "reward_infos",
+            "type": {
+              "array": [
+                {
+                  "defined": {
+                    "name": "PositionRewardInfo"
+                  }
+                },
+                3
+              ]
+            }
+          },
+          {
+            "name": "recent_epoch",
+            "type": "u64"
+          },
+          {
+            "name": "padding",
+            "type": {
+              "array": [
+                "u64",
+                7
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "PoolState",
+      "docs": [
+        "The pool state",
+        "",
+        "PDA of `[POOL_SEED, config, token_mint_0, token_mint_1]`",
+        ""
+      ],
+      "serialization": "bytemuckunsafe",
+      "repr": {
+        "kind": "rust",
+        "packed": true
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "docs": [
+              "Bump to identify PDA"
+            ],
+            "type": {
+              "array": [
+                "u8",
+                1
+              ]
+            }
+          },
+          {
+            "name": "amm_config",
+            "type": "pubkey"
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "token_mint_0",
+            "docs": [
+              "Token pair of the pool, where token_mint_0 address < token_mint_1 address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "token_mint_1",
+            "type": "pubkey"
+          },
+          {
+            "name": "token_vault_0",
+            "docs": [
+              "Token pair vault"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "token_vault_1",
+            "type": "pubkey"
+          },
+          {
+            "name": "observation_key",
+            "docs": [
+              "observation account key"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "mint_decimals_0",
+            "docs": [
+              "mint0 and mint1 decimals"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "mint_decimals_1",
+            "type": "u8"
+          },
+          {
+            "name": "tick_spacing",
+            "docs": [
+              "The minimum number of ticks between initialized ticks"
+            ],
+            "type": "u16"
+          },
+          {
+            "name": "liquidity",
+            "docs": [
+              "The currently in range liquidity available to the pool."
+            ],
+            "type": "u128"
+          },
+          {
+            "name": "sqrt_price_x64",
+            "docs": [
+              "The current price of the pool as a sqrt(token_1/token_0) Q64.64 value"
+            ],
+            "type": "u128"
+          },
+          {
+            "name": "tick_current",
+            "docs": [
+              "The current tick of the pool, i.e. according to the last tick transition that was run."
+            ],
+            "type": "i32"
+          },
+          {
+            "name": "padding3",
+            "type": "u16"
+          },
+          {
+            "name": "padding4",
+            "type": "u16"
+          },
+          {
+            "name": "fee_growth_global_0_x64",
+            "docs": [
+              "The fee growth as a Q64.64 number, i.e. fees of token_0 and token_1 collected per",
+              "unit of liquidity for the entire life of the pool."
+            ],
+            "type": "u128"
+          },
+          {
+            "name": "fee_growth_global_1_x64",
+            "type": "u128"
+          },
+          {
+            "name": "protocol_fees_token_0",
+            "docs": [
+              "The amounts of token_0 and token_1 that are owed to the protocol."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "protocol_fees_token_1",
+            "type": "u64"
+          },
+          {
+            "name": "swap_in_amount_token_0",
+            "docs": [
+              "The amounts in and out of swap token_0 and token_1"
+            ],
+            "type": "u128"
+          },
+          {
+            "name": "swap_out_amount_token_1",
+            "type": "u128"
+          },
+          {
+            "name": "swap_in_amount_token_1",
+            "type": "u128"
+          },
+          {
+            "name": "swap_out_amount_token_0",
+            "type": "u128"
+          },
+          {
+            "name": "status",
+            "docs": [
+              "Bitwise representation of the state of the pool",
+              "bit0, 1: disable open position and increase liquidity, 0: normal",
+              "bit1, 1: disable decrease liquidity, 0: normal",
+              "bit2, 1: disable collect fee, 0: normal",
+              "bit3, 1: disable collect reward, 0: normal",
+              "bit4, 1: disable swap, 0: normal"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "padding",
+            "docs": [
+              "Leave blank for future use"
+            ],
+            "type": {
+              "array": [
+                "u8",
+                7
+              ]
+            }
+          },
+          {
+            "name": "reward_infos",
+            "type": {
+              "array": [
+                {
+                  "defined": {
+                    "name": "RewardInfo"
+                  }
+                },
+                3
+              ]
+            }
+          },
+          {
+            "name": "tick_array_bitmap",
+            "docs": [
+              "Packed initialized tick array state"
+            ],
+            "type": {
+              "array": [
+                "u64",
+                16
+              ]
+            }
+          },
+          {
+            "name": "total_fees_token_0",
+            "docs": [
+              "except protocol_fee and fund_fee"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_fees_claimed_token_0",
+            "docs": [
+              "except protocol_fee and fund_fee"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_fees_token_1",
+            "type": "u64"
+          },
+          {
+            "name": "total_fees_claimed_token_1",
+            "type": "u64"
+          },
+          {
+            "name": "fund_fees_token_0",
+            "type": "u64"
+          },
+          {
+            "name": "fund_fees_token_1",
+            "type": "u64"
+          },
+          {
+            "name": "open_time",
+            "type": "u64"
+          },
+          {
+            "name": "recent_epoch",
+            "type": "u64"
+          },
+          {
+            "name": "padding1",
+            "type": {
+              "array": [
+                "u64",
+                24
+              ]
+            }
+          },
+          {
+            "name": "padding2",
+            "type": {
+              "array": [
+                "u64",
+                32
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "PositionInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "tick_lower_index",
+            "type": "i32"
+          },
+          {
+            "name": "tick_upper_index",
+            "type": "i32"
+          },
+          {
+            "name": "position_key",
+            "type": "pubkey"
+          },
+          {
+            "name": "nft_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "winner_ata",
+            "type": "pubkey"
+          },
+          {
+            "name": "pool_state",
+            "type": "pubkey"
+          },
+          {
+            "name": "i",
+            "type": "i32"
+          },
+          {
+            "name": "buff",
+            "type": {
+              "array": [
+                "u8",
+                4
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "PositionRewardInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "growth_inside_last_x64",
+            "type": "u128"
+          },
+          {
+            "name": "reward_amount_owed",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RewardInfo",
+      "serialization": "bytemuckunsafe",
+      "repr": {
+        "kind": "rust",
+        "packed": true
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "reward_state",
+            "docs": [
+              "Reward state"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "open_time",
+            "docs": [
+              "Reward open time"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "end_time",
+            "docs": [
+              "Reward end time"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "last_update_time",
+            "docs": [
+              "Reward last update time"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "emissions_per_second_x64",
+            "docs": [
+              "Q64.64 number indicates how many tokens per second are earned per unit of liquidity."
+            ],
+            "type": "u128"
+          },
+          {
+            "name": "reward_total_emissioned",
+            "docs": [
+              "The total amount of reward emissioned"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "reward_claimed",
+            "docs": [
+              "The total amount of claimed reward"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "token_mint",
+            "docs": [
+              "Reward token mint."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "token_vault",
+            "docs": [
+              "Reward vault token account."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "authority",
+            "docs": [
+              "The owner that has permission to set reward param"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "reward_growth_global_x64",
+            "docs": [
+              "Q64.64 number that tracks the total tokens earned per unit of liquidity since the reward",
+              "emissions were turned on."
+            ],
+            "type": "u128"
+          }
+        ]
+      }
+    }
+  ]
+  // @ts-ignore
+} as Idl, new AnchorProvider(connection))
+// @ts-ignore
+const gameAcc = await program.account.game.fetch(game)
       const [extra] = PublicKey.findProgramAddressSync(
-        [Buffer.from("extra-account-metas"), FOMO3D_MINT.toBuffer()],
+        [Buffer.from("extra-account-metas"), gameAcc.mint.toBuffer()],
         PROGRAM_ID
       );
 
@@ -363,7 +1784,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         nftMint.publicKey,
         poolInfo,
         positionSize,
-        extra, nft
+        extra, nft,gameAcc
       );
 
       // Create transaction
@@ -445,7 +1866,7 @@ async function fetchTokenBalance(walletPublicKey: PublicKey, mint: PublicKey) {
   return new BN(balance.value.amount);
 }
 
-async function createOpenPositionInstruction(walletPublicKey: PublicKey, nftMint: PublicKey, poolInfo: any, positionSize: any, extra: PublicKey, nft: Keypair) {
+async function createOpenPositionInstruction(walletPublicKey: PublicKey, nftMint: PublicKey, poolInfo: any, positionSize: any, extra: PublicKey, nft: Keypair, gmaeAcc:any) {
   // Implement this function to create the open position instruction
   // Use the provided code as a reference
   const program = new Program({
@@ -1871,7 +3292,7 @@ async function createOpenPositionInstruction(walletPublicKey: PublicKey, nftMint
     .accounts({
       safe: PublicKey.findProgramAddressSync([
         Buffer.from('extra-account-metas'),
-        poolInfo.mint.toBuffer()
+        gmaeAcc.otherMint.toBuffer()
       ], PROGRAM_ID)[0],
       extraTokenAccount0: getAssociatedTokenAddressSync(new PublicKey(poolInfo.mintA.address), extra, true),
       extraTokenAccount1: getAssociatedTokenAddressSync(new PublicKey(poolInfo.mintB.address), extra, true),
