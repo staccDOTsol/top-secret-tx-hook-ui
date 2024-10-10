@@ -75,7 +75,7 @@ export function buildTokenGraphFromPools(pools: any[]): TokenGraph {
 
     const edgeDataAB: EdgeData = {
       isWhirlpool: true,
-      optional: false, // Include all pools
+      optional: pool.optional, // Include all pools
       poolData: pool,
       tokenA: tokenAMint,
       tokenB: tokenBMint,
@@ -87,7 +87,7 @@ export function buildTokenGraphFromPools(pools: any[]): TokenGraph {
 
     const edgeDataBA: EdgeData = {
       isWhirlpool: true,
-      optional: false, // Include all pools
+      optional: pool.optional, // Include all pools
       poolData: pool,
       tokenA: tokenBMint,
       tokenB: tokenAMint,
@@ -117,7 +117,7 @@ export function detectArbitrage(graph: TokenGraph): string[][] {
   console.log(`Analyzing start node: ${startNode}`);
 
   function dfs(currentNode: string, path: string[], visited: Set<string>, profit: number) {
-    if (currentNode === startNode && path.length > 2) {
+    if (currentNode === startNode && path.length > 1) {
       // We've found a cycle back to USDC
       arbitrageOpportunities.push([...path, startNode]);
       return;
@@ -292,7 +292,7 @@ console.log(arbitrageOpportunities)
 
     // Filter out the official Orca whirlpools
     const filteredWhirlpoolAccounts = whirlpoolAccounts.filter(
-      (account:any) => !orcaWhirlpoolIds.has(account.pubkey.toString()) || Math.random() < 0.05)
+      (account:any) => !orcaWhirlpoolIds.has(account.pubkey.toString()) || Math.random() < 0.15)
     // Replace the original whirlpoolAccounts with the filtered list
     whirlpoolAccounts = filteredWhirlpoolAccounts;
 
