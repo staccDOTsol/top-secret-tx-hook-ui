@@ -211,6 +211,7 @@ function calculateOutput(path: string[]): number {
             <Input
               id="startingAmount"
               type="number"
+              disabled={arbitraging}
               value={startingAmount}
               onChange={(e) => setStartingAmount(e.target.value)}
               className="w-full sm:w-32 bg-gray-700 text-white"
