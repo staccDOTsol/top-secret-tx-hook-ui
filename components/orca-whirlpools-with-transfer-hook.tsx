@@ -219,7 +219,9 @@ function calculateOutput(path: string[]): number {
         });
         const transactionLinks = signatures.join(', ');
 
-        setArbResult(`Arbitrage successful. Transaction Signatures: ${transactionLinks}`);
+        const uniqueSignatures = [...new Set(signatures)];
+        const uniqueTransactionLinks = uniqueSignatures.join(', ');
+        setArbResult(`Arbitrage successful. Transaction Signatures: ${uniqueTransactionLinks}`);
 
       } catch (error:any) {
         console.error('Error during arbitrage:', error);

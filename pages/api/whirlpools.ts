@@ -196,7 +196,7 @@ console.log(arbitrageOpportunities)
     return extraAccountMetas.length > 0 ? extraAccountMetas : undefined;
   }
   const NodeCache = require('node-cache');
-  const cache = new NodeCache({ stdTTL: 600 }); // Cache for 10 minutes
+  const cache = new NodeCache({ stdTTL: 6000 }); // Cache for 10 minutes
 
   export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'GET') {
