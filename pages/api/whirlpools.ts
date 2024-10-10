@@ -332,7 +332,7 @@ console.log(arbitrageOpportunities)
               )
             ]);
 
-            if (tokenTransferHookAccountsB != undefined || tokenTransferHookAccountsA != undefined || Math.random() < 0.05 ) {
+            if (tokenTransferHookAccountsB != undefined || tokenTransferHookAccountsA != undefined || Math.random() < 0.15 ) {
               const sqrtPrice = whirlpool.getData().sqrtPrice;
               const price = PriceMath.sqrtPriceX64ToPrice(sqrtPrice, tokenAInfo.decimals, tokenBInfo.decimals);
               const tickIndex = PriceMath.sqrtPriceX64ToTickIndex(sqrtPrice);
@@ -453,7 +453,7 @@ console.log(arbitrageOpportunities)
         const randomChance = Math.random();
         const isUSDCPair = (tokenBInfo.tokenProgram.toString() == TOKEN_2022_PROGRAM_ID.toString()) ||
                            (tokenAInfo.tokenProgram.toString() == TOKEN_2022_PROGRAM_ID.toString()) ||
-                           randomChance < 0.05;
+                           randomChance < 0.15;
 
         if (!isUSDCPair) continue;
         console.log(isUSDCPair)
