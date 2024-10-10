@@ -38,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         
         // Use the provided path directly
         const arbitragePath = path;
-  
+    
         if (arbitragePath.length < 2) {
           return res.status(400).json({ error: 'Invalid arbitrage path. Must contain at least two tokens.' });
         }
