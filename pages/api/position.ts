@@ -3281,7 +3281,7 @@ async function createOpenPositionInstruction(walletPublicKey: PublicKey, nftMint
       ], PROGRAM_ID)[0],
       positionInfo: PublicKey.findProgramAddressSync([
         Buffer.from(new BN(poolInfo.tickCurrent).toBuffer('le', 4))
-      ], program.programId),
+      ], program.programId)[0],
       extraTokenAccount0: getAssociatedTokenAddressSync(new PublicKey(poolInfo.mintA.address), extra, true),
       extraTokenAccount1: getAssociatedTokenAddressSync(new PublicKey(poolInfo.mintB.address), extra, true),
       funder: walletPublicKey,
