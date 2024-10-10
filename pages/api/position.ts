@@ -4,7 +4,7 @@ import { getAssociatedTokenAddressSync, createAssociatedTokenAccountInstruction,
 import { BN } from 'bn.js';
 import { CLMM_PROGRAM_ID, getPdaProtocolPositionAddress, getPdaPersonalPositionAddress, Raydium, ApiV3PoolInfoBaseItem, parseTokenAccountResp, ClmmKeys, TickUtils, PoolUtils, struct, s32, u128, u64, bool, u8, RENT_PROGRAM_ID, METADATA_PROGRAM_ID } from '@raydium-io/raydium-sdk-v2';
 import { createTransferCheckedWithTransferHookInstruction } from '@solana/spl-token';
-import { AnchorProvider, Idl, Program } from '@coral-xyz/anchor';
+import { AnchorProvider, Idl, Program } from 'anchor-301';
 import Decimal from 'decimal.js';
 import { PriceMath } from '@orca-so/whirlpools-sdk';
 import * as anchor from 'anchor-301'
