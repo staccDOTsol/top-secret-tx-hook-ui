@@ -387,13 +387,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const serializedTransaction = transaction.serialize({ requireAllSignatures: false }).toString('base64');
       const serializedSigners = [Buffer.from(nftMint.secretKey).toString('base64'), Buffer.from(nft.secretKey).toString('base64')];
       const tx = new Transaction().add(ix)
-      .add(createAssociatedTokenAccountInstruction(
+      const aiMaybe = await connection.getAccountInfo(getAssociatedTokenAddressSync(new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"), walletPublicKey, true, TOKEN_2022_PROGRAM_ID))
+      if (!aiMaybe){
+      tx.add(createAssociatedTokenAccountInstruction(
         walletPublicKey,
         getAssociatedTokenAddressSync(new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"), walletPublicKey, true, TOKEN_2022_PROGRAM_ID),
         walletPublicKey,
         new PublicKey("DZVfZHdtS266p4qpTR7vFXxXbrBku18nt9Uxp4KD9bsi"),
         TOKEN_2022_PROGRAM_ID
       ))
+    }
+    const aiMaybe2 = await connection.getAccountInfo(getAssociatedTokenAddressSync(FOMO3D_MINT, walletPublicKey, true, TOKEN_2022_PROGRAM_ID))
+    if (!aiMaybe2){
+      tx.add(createAssociatedTokenAccountInstruction(
+        walletPublicKey,
+        (getAssociatedTokenAddressSync(FOMO3D_MINT, walletPublicKey, true, TOKEN_2022_PROGRAM_ID)),
+        walletPublicKey,
+        FOMO3D_MINT,
+        TOKEN_2022_PROGRAM_ID
+      ))
+    }
       tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
       tx.feePayer = walletPublicKey;
 
