@@ -278,14 +278,12 @@ async function performArbitrage(
       serializedTransactions.push(await createAndSerializeTransaction(connection, walletPublicKey, swapIx.instructions));
 
       currentAmount = Math.floor(currentAmount * edgeData.price * (1 - 0.005));
-
+      if (transactionInstructions.length > 0 ) {
       // Check if we need to create a new transaction
       if (getTransactionSize(transactionInstructions, walletPublicKey, (await connection.getLatestBlockhash()).blockhash) > 1200) {
         serializedTransactions.push(await createAndSerializeTransaction(connection, walletPublicKey, transactionInstructions));
         transactionInstructions.length = 0; // Clear the instructions array
       }
-    } else {
-      throw new Error('Non-whirlpool swaps are not implemented in this example.');
     }
   }
 
