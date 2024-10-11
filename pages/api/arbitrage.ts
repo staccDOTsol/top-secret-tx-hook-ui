@@ -286,6 +286,7 @@ async function performArbitrage(
       }
     }
   }
+  }
 
   if (isEndingWithSOL) {
     const userWSOLATA = getAssociatedTokenAddressSync(NATIVE_MINT, walletPublicKey);
