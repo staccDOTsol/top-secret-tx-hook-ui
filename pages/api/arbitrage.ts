@@ -322,7 +322,7 @@ async function createAndSerializeTransaction(
   connection: Connection,
   walletPublicKey: PublicKey,
   instructions: TransactionInstruction[]
-): Promise<string> {
+): Promise<string> { 
 
   const latestBlockhash = await connection.getLatestBlockhash();
   const messageV0 = new TransactionMessage({
@@ -340,6 +340,7 @@ function getTransactionSize(instructions: TransactionInstruction[], pubkey: Publ
   const transaction = new Transaction().add(...instructions);
 transaction.recentBlockhash  = blockhash
 transaction.feePayer = pubkey
+try {
   const serializedTransaction = transaction.serialize({
     requireAllSignatures: false,
     verifySignatures: false
@@ -347,4 +348,8 @@ transaction.feePayer = pubkey
   const base64Transaction = Buffer.from(serializedTransaction).toString('base64');
   console.log(base64Transaction.length)
   return base64Transaction.length;
+
+} catch (err){
+  return 1429
+}
 }
