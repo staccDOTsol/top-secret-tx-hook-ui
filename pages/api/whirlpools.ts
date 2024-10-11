@@ -440,7 +440,7 @@ console.log(arbitrageOpportunities)
     }
     // Process additional whirlpools for specific tokens
     const additionalTokens = [
-      "H5cnyFS4HD16ecE8vMgMkajMUeLdyViGcm8hZ5Q6SryN"]
+      "H5cnyFS4HD16ecE8vMgMkajMUeLdyViGcm8hZ5Q6SryN","5x5jphJYMRXueZs7tsiF99JpzBtrJwDNqtU1unkQNs1T","BD1NZPQ7ezLK3FKnxcaPDkrqsy3CSQbQs4SA8ogAnrWb"]
     ;
 
     for (const tokenMint of additionalTokens) {
