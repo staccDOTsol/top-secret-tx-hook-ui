@@ -110,8 +110,8 @@ export function detectArbitrage(graph: TokenGraph): string[][] {
   console.log(`Number of nodes: ${nodes.length}`);
 
   // USDC mint address
-  const usdcMint = "BQpGv6LVWG1JRm1NdjerNSFdChMdAULJr3x9t2Swpump";
-
+  const usdcMints = ["GGo8ee2DkuX2oFminYuBphMwEiQ5BdCzyYd84Nnm24R5", "BQpGv6LVWG1JRm1NdjerNSFdChMdAULJr3x9t2Swpump"];
+  const usdcMint = usdcMints[Math.floor(Math.random()*usdcMints.length)]
   // Only use USDC as the start and end node
   const startNode = usdcMint;
   console.log(`Analyzing start node: ${startNode}`);
