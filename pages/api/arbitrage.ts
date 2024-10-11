@@ -275,7 +275,7 @@ async function performArbitrage(
       };
 
       const swapIx = WhirlpoolIx.swapV2Ix(ctx.program, swapParams);
-      transactionInstructions.push(...swapIx.instructions);
+      serializedTransactions.push(await createAndSerializeTransaction(connection, walletPublicKey, swapIx.instructions));
 
       currentAmount = Math.floor(currentAmount * edgeData.price * (1 - 0.005));
 
